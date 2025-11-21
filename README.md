@@ -6,3 +6,5 @@ Iago Lucini da Silva - RA: 281244<br>
 Agnes Manoel - RA: <br>
 Bernardo Correia Prados Nascimento - RA: 
 
+# Diagrama UML
+![](./Diagrama%20-%20Transparente.png)
