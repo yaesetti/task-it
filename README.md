@@ -3,8 +3,8 @@ Projeto Final implementado em Java para a disciplina MC322 - Programação Orien
 ## Autores:
 Victor Yaegashi Setti - RA: 206362<br>
 Iago Lucini da Silva - RA: 281244<br>
-Agnes Manoel - RA: <br>
-Bernardo Correia Prados Nascimento - RA: 
+Agnes Manoel - RA: 232879<br>
+Bernardo Correia Prados Nascimento - RA: 245837
 
 # Diagrama UML
 ![](diagrama/Diagrama%20-%20Transparente.svg)
