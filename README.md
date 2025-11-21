@@ -7,4 +7,4 @@ Agnes Manoel - RA: <br>
 Bernardo Correia Prados Nascimento - RA: 
 
 # Diagrama UML
-![](./Diagrama%20-%20Transparente.svg)
+![](diagrama/Diagrama%20-%20Transparente.svg)
