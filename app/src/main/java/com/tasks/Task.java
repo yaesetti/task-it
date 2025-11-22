@@ -1,8 +1,8 @@
 package com.tasks;
 
-import excecoes.DataInvalidaException;
-import categorias.Categoria;
-import usuarios.Usuario;
+import com.excecoes.DataInvalidaException;
+import com.categorias.Categoria;
+import com.usuarios.Usuario;
 
 import java.util.UUID;
 import java.util.ArrayList;
