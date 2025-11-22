@@ -1,12 +1,12 @@
 package com.tasks;
 
-import categorias.Categoria;
-import usuarios.Usuario;
-
 import java.util.ArrayList;
 import java.util.UUID;
 import java.time.LocalDateTime;
 import java.time.Duration;
+
+import com.categorias.Categoria;
+import com.usuarios.Usuario;
 
 public interface TaskInterface {
     public String getTitulo();
@@ -15,7 +15,7 @@ public interface TaskInterface {
 
     public Categoria getCategoria();
 
-    public UUID getUUID();
+    public UUID getId();
 
     public boolean getFeito();
 
