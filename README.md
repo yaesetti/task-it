@@ -4,7 +4,7 @@ Projeto Final implementado em Java para a disciplina MC322 - Programação Orien
 Victor Yaegashi Setti - RA: 206362<br>
 Iago Lucini da Silva - RA: 281244<br>
 Agnes Manoel - RA: 232879<br>
-Bernardo Correia Prados Nascimento - RA: 245837
+Bernardo Correia Prados Nascimento - RA: 245837<br>
 
 # Diagrama UML
 ![](diagrama/Diagrama%20-%20Transparente.svg)
