@@ -1,130 +1,55 @@
 package com.tasks;
 
+import java.util.List;
 import java.util.UUID;
-import java.util.ArrayList;
 import java.time.LocalDateTime;
 import java.time.Duration;
 
-import com.excecoes.DataInvalidaException;
 import com.categorias.Categoria;
 import com.usuarios.Usuario;
+import com.excecoes.UsuarioInvalidoException;
+import com.excecoes.DataInvalidaException;
 
-public abstract class Task implements TaskInterface {
-    private String titulo;
-    private String descricao;
-    private Categoria categoria;
-    private final UUID id;
-    private boolean feito;
-    private ArrayList<Subtarefa> subtarefas;
-    private LocalDateTime data;
-    private ArrayList<Usuario> usuariosDonos;
+public interface Task {
+    public String getTitulo();
 
-    public Task(String titulo, String descricao, Categoria categoria, LocalDateTime data, ArrayList<Usuario> usuariosDonos) throws DataInvalidaException {
-        this.titulo = titulo;
-        this.descricao = descricao;
-        this.categoria = categoria;
-        this.id = UUID.randomUUID();
-        this.feito = false;
-        this.subtarefas = new ArrayList<>();
-        this.data = data;
-        this.usuariosDonos = usuariosDonos;
+    public String getDescricao();
 
-        // DEVE ESTAR ERRADO
-        if (data.isBefore(LocalDateTime.now())) {
-            throw new DataInvalidaException("Data Invalida: A data de uma Task nao pode ser no passado!");
-        }
-    }
+    public Categoria getCategoria();
 
-    @Override
-    public String getTitulo() {
-        return this.titulo;
-    }
+    public UUID getId();
 
-    @Override
-    public String getDescricao() {
-        return this.descricao;
-    }
+    public boolean getFeito();
 
-    @Override
-    public Categoria getCategoria() {
-        return this.categoria;
-    }
+    public List<Subtarefa> getSubtarefas();
 
-    @Override
-    public UUID getId() {
-        return this.id;
-    }
+    public LocalDateTime getData();
 
-    @Override
-    public boolean getFeito() {
-        return this.feito;
-    }
+    public List<Usuario> getUsuariosDonos();
 
-    @Override
-    public ArrayList<Subtarefa> getSubtarefas() {
-        return this.subtarefas;
-    }
+    public void setTitulo(String novoTitulo);
 
-    @Override
-    public LocalDateTime getData() {
-        return this.data;
-    }
+    public void setDescricao(String novaDescricao);
 
-    @Override
-    public ArrayList<Usuario> getUsuariosDonos() {
-        return this.usuariosDonos;
-    }
+    public void setCategoria(Categoria novaCategoria);
 
-    @Override
-    public void setTitulo(String novoTitulo) {
-        this.titulo = novoTitulo;
-    }
+    public void setFeito(boolean novoFeito);
 
-    @Override
-    public void setDescricao(String novaDescricao) {
-        this.descricao = novaDescricao;
-    }
+    public void trocarFeito();
 
-    @Override
-    public void setCategoria(Categoria novaCategoria) {
-        this.categoria = novaCategoria;
-    }
+    public void adicionarSubtarefa(String titulo, String descricao);
 
-    @Override
-    public void setFeito(boolean novoFeito) {
-        this.feito = novoFeito;
-    }
+    public void adicionarSubtarefa(String titulo);
 
-    @Override
-    public void trocarFeito() {
-        this.feito = !this.feito;
-    }
+    public boolean excluirSubtarefa(UUID id);
 
-    //TODO
-    @Override
-    public void adicionarSubtarefa() {
+    public void setFeitoTodasSubtarefas(boolean novoFeito);
 
-    }
+    public void setData(LocalDateTime novaData) throws DataInvalidaException;
 
-    @Override
-    public void excluirSubtarefa(UUID id) {
-        this.subtarefas.removeIf(subtarefa -> id.equals(subtarefa.getId()));
-    }
+    public Duration calcularTempoRestante();
 
-    @Override
-    public void setFeitoTodasSubtarefas(boolean novoFeito) {
-        for (Subtarefa subtarefa : this.subtarefas) {
-            subtarefa.setFeito(novoFeito);
-        }
-    }
+    public void adicionarUsuarioDono(Usuario novoUsuarioDono) throws UsuarioInvalidoException;
 
-    @Override
-    public void setData(LocalDateTime novaData) {
-        this.data = novaData;
-    }
-
-    @Override
-    public Duration calcularTempoRestante() {
-        return Duration.between(LocalTimeDate.now(), this.data);
-    }
+    public boolean removerUsuarioDono(UUID id);
 }
