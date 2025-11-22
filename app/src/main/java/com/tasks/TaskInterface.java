@@ -40,7 +40,11 @@ public interface TaskInterface {
 
     public void excluirSubtarefa(UUID id);
 
-    public void setFeitoTodasSubtarefas();
+    public void setFeitoTodasSubtarefas(boolean novoFeito);
+
+    public void setData(LocalDateTime novaData);
 
     public Duration calcularTempoRestante();
+
+    public void adicionarUsuarioDono(Usuario novoUsuarioDono);
 }

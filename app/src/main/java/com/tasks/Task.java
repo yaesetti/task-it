@@ -29,6 +29,7 @@ public abstract class Task implements TaskInterface {
         this.data = data;
         this.usuariosDonos = usuariosDonos;
 
+        // DEVE ESTAR ERRADO
         if (data.isBefore(LocalDateTime.now())) {
             throw new DataInvalidaException("Data Invalida: A data de uma Task nao pode ser no passado!");
         }
@@ -111,10 +112,15 @@ public abstract class Task implements TaskInterface {
     }
 
     @Override
-    public void setFeitoTodasSubtarefas() {
+    public void setFeitoTodasSubtarefas(boolean novoFeito) {
         for (Subtarefa subtarefa : this.subtarefas) {
-            subtarefa.setFeito(true);
+            subtarefa.setFeito(novoFeito);
         }
+    }
+
+    @Override
+    public void setData(LocalDateTime novaData) {
+        this.data = novaData;
     }
 
     @Override
