@@ -13,6 +13,7 @@ import com.tasks.TaskPadrao;
 import com.tasks.TaskPeriodica;
 import com.tasks.Categoria;
 import com.excecoes.CategoriaDuplicadaException;
+import com.excecoes.DataInvalidaException;
 import com.usuarios.Usuario;
 
 public class GerenciadorDeTasks {
@@ -32,7 +33,11 @@ public class GerenciadorDeTasks {
      * @param usuariosDonos
      */
     public void criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, List<Usuario> usuariosDonos) {
-        this.tasks.add(new TaskPadrao(titulo, descricao, categoria, data, usuariosDonos));
+        try {
+            this.tasks.add(new TaskPadrao(titulo, descricao, categoria, data, usuariosDonos));
+        } catch (DataInvalidaException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     /**
@@ -46,7 +51,11 @@ public class GerenciadorDeTasks {
      * @param dataFinal
      */
     public void criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, List<Usuario> usuariosDonos, Duration recorrencia, LocalDateTime dataFinal) {
-        this.tasks.add(new TaskPeriodica(titulo, descricao, categoria, data, usuariosDonos, recorrencia, dataFinal));
+        try {
+            this.tasks.add(new TaskPeriodica(titulo, descricao, categoria, data, usuariosDonos, recorrencia, dataFinal));
+        } catch (DataInvalidaException e) {
+            System.err.println(e.getMessage());
+        }
     }
 
     public boolean apagarTask(UUID id) {

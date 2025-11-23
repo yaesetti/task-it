@@ -2,9 +2,9 @@ package com.tasks;
 
 import java.time.LocalDateTime;
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
 
+import com.usuarios.Usuario;
 import com.excecoes.DataInvalidaException;
 
 public class TaskPeriodica extends TaskAbstrata {
@@ -49,7 +49,12 @@ public class TaskPeriodica extends TaskAbstrata {
         this.setFeito(false);
         this.setFeitoTodasSubtarefas(false);
         LocalDateTime novaData = this.getData().plus(this.recorrencia);
-        this.setData(novaData);
+        try {
+            this.setData(novaData);
+        }
+        catch (DataInvalidaException e) {
+            // Nao faz nada pois sabe-se que a data + recorrencia nao vai dar problema
+        }
     }
 
     public LocalDateTime getDataFinal() {

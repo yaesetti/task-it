@@ -167,7 +167,7 @@ public abstract class TaskAbstrata implements Task {
             Usuario usuario = this.usuariosDonos.get(i);
             if (usuario.getId().equals(id)) {
                 this.usuariosDonos.remove(i);
-                usuario.removeTask(this.id);
+                usuario.removerTask(this.id);
                 return true;
             }
        }
