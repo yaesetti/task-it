@@ -1,19 +1,20 @@
-import javax.swing.JFrame;
-import javax.swing.JLabel; // Não é mais estritamente necessário, mas mantido
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import java.awt.BorderLayout;
+import java.awt.Color; // Não é mais estritamente necessário, mas mantido
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.text.DateFormat;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
-import javax.swing.JTextArea;
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.GridLayout;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
-import java.awt.FlowLayout;
-import java.awt.Dimension;
+
 
 public class AppBorderLayout {
 
@@ -39,10 +40,13 @@ public class AppBorderLayout {
         Dimension tamanhoBotaoC1 = new Dimension(170, 40);        
         JButton btnDia = new JButton("Dia"); // Dia
         btnDia.setPreferredSize(tamanhoBotaoC1);
+        btnDia.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JButton btnMes = new JButton("Mês"); // Mês
         btnMes.setPreferredSize(tamanhoBotaoC1);
+        btnMes.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JButton btnTotal = new JButton("Total"); // Total
         btnTotal.setPreferredSize(tamanhoBotaoC1);
+        btnTotal.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         // Adiciona oos botões em C1
         C1.add(btnDia);
@@ -66,17 +70,11 @@ public class AppBorderLayout {
 
         // Inserção artificial de post-its
         Dimension tamanhoFixoPostit = new Dimension(250, 250);
-        for(int i = 0; i<14; i++) {
+        for(int i = 0; i<2; i++) {
 
-            // Criação do painel do post-it
-            JPanel PostitConteudo = new JPanel();
-            PostitConteudo.setBackground(Color.YELLOW);
-            PostitConteudo.setPreferredSize(tamanhoFixoPostit);
-            
-            // Painel fantasma que centraliza o postit
-            JPanel Wrapper = new JPanel(new FlowLayout(FlowLayout.CENTER));
-            Wrapper.setOpaque(false);
-            Wrapper.add(PostitConteudo); 
+            Postit newPostit;
+            newPostit = new Postit("Trabalho de Mc322", "15/02/2004", "Faculdade", false);
+            JPanel Wrapper = newPostit.PanelPostit();
             C2.add(Wrapper);
         }
 
@@ -90,8 +88,10 @@ public class AppBorderLayout {
         Dimension tamanhoBotaoC3 = new Dimension(170, 60); // Ex: 100 de largura, 50 de altura
         JButton btnUsuario = new JButton("Usuário");
         btnUsuario.setPreferredSize(tamanhoBotaoC3); 
+        btnUsuario.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         JButton bntNewTask = new JButton("Nova task");
         bntNewTask.setPreferredSize(tamanhoBotaoC3);
+        bntNewTask.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
 
         // Adiciona os botões em C3
         C3.add(btnUsuario, BorderLayout.WEST); 
