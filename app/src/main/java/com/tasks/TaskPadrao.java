@@ -3,7 +3,6 @@ package com.tasks;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import com.categorias.Categoria;
 import com.usuarios.Usuario;
 import com.excecoes.DataInvalidaException;
 

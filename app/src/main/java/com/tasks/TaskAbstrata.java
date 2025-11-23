@@ -9,7 +9,6 @@ import java.time.Duration;
 
 import com.excecoes.DataInvalidaException;
 import com.excecoes.UsuarioInvalidoException;
-import com.categorias.Categoria;
 import com.usuarios.Usuario;
 
 public abstract class TaskAbstrata implements Task {
@@ -168,7 +167,7 @@ public abstract class TaskAbstrata implements Task {
             Usuario usuario = this.usuariosDonos.get(i);
             if (usuario.getId().equals(id)) {
                 this.usuariosDonos.remove(i);
-                usuario.removeTask(this.id);
+                usuario.removerTask(this.id);
                 return true;
             }
        }

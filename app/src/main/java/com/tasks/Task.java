@@ -5,7 +5,6 @@ import java.util.UUID;
 import java.time.LocalDateTime;
 import java.time.Duration;
 
-import com.categorias.Categoria;
 import com.usuarios.Usuario;
 import com.excecoes.UsuarioInvalidoException;
 import com.excecoes.DataInvalidaException;
