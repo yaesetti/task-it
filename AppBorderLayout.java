@@ -4,6 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.text.DateFormat;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -15,6 +17,11 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
+import com.tasks.Categoria;
+import com.tasks.TaskPadrao;
+import java.awt.Color;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class AppBorderLayout {
 
@@ -69,11 +76,27 @@ public class AppBorderLayout {
         C2scroll.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
 
         // Inserção artificial de post-its
+        Categoria catUrgente = new Categoria("Urgente", "Prioridade alta", new Color(255, 102, 102)); // Vermelho claro
+        Categoria catTrabalho = new Categoria("Trabalho", "Coisas do escritório", new Color(173, 216, 230)); // Azul claro
+        Categoria catPessoal = new Categoria("Pessoal", "Minha vida", new Color(255, 255, 153)); // Amarelo clássico
+        Categoria catEstudos = new Categoria("Estudos", "Faculdade", new Color(144, 238, 144)); // Verde claro
+        // Lista para alternar categorias no loop
+        Categoria[] minhasCategorias = {catUrgente, catTrabalho, catPessoal, catEstudos};
         Dimension tamanhoFixoPostit = new Dimension(250, 250);
         for(int i = 0; i<2; i++) {
 
+            Categoria categoriaDaVez = minhasCategorias[i % 4]; 
+
+            TaskPadrao task = new TaskPadrao(
+                "Task " + (i + 1),
+                "Descrição detalhada da tarefa " + (i + 1) + "...",
+                categoriaDaVez,
+                LocalDateTime.now().plusDays(i + 1),
+                new ArrayList<>()
+            );
+
             Postit newPostit;
-            newPostit = new Postit("Trabalho de Mc322", "15/02/2004", "Faculdade", false);
+            newPostit = new Postit(task);
             JPanel Wrapper = newPostit.PanelPostit();
             C2.add(Wrapper);
         }

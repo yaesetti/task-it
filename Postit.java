@@ -4,7 +4,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -14,6 +15,10 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.tasks.Categoria;
+import com.tasks.TaskPadrao;import java.awt.Color;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 
 public class Postit extends JPanel {
 
@@ -21,11 +26,26 @@ public class Postit extends JPanel {
     private JTextArea dataArea;
     private JTextArea categArea;
     private JCheckBox feitoArea;
+    private Task tarefaOriginal;
 
-    public Postit(String title, String data, String categ, Boolean feito) {
+    public Postit(Task task) {
+
+        this.tarefaOriginal = task;
+        String title = task.getTitulo();
+        String categ = (task.getCategoria()).getNome();
+        String desc = task.getDescricao();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String data = task.getData().format(formatter);
+        Boolean feito = task.getFeito();
+        Color corFundo = (this.getCategoria()).getCor();
 
         // Criação do painel principal do post-it
-        this.setBackground(new Color(255, 255, 153));
+        JPanel painelPrincipal = new JPanel(new BorderLayout());
+        if (corFundo != null && this.getCategoria() != null) {
+            this.setBackground(corFundo);
+        } else {
+            this.setBackground(new Color(255, 255, 153));
+        }
         this.setPreferredSize(new Dimension(200, 200));
         this.setLayout(new BorderLayout());
 
@@ -50,7 +70,7 @@ public class Postit extends JPanel {
         titleArea.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                PostitDetail detail = new PostitDetail(title, data, categ, feito, "descrição...");
+                PostitDetail detail = new PostitDetail(task);
                 detail.setVisible(true);
             }
         });

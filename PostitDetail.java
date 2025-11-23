@@ -3,27 +3,45 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.time.format.DateTimeFormatter;
 import java.awt.Dimension;
 import javax.swing.BorderFactory;
-import javax.swing.Box;             // Faltava este
+import javax.swing.Box;             
 import javax.swing.BoxLayout;
-import javax.swing.JButton;         // Faltava este
+import javax.swing.JButton;         
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;     // Faltava este
-import javax.swing.JSeparator;      // Faltava este
+import javax.swing.JScrollPane;     
+import javax.swing.JSeparator;      
 import javax.swing.JTextArea;
 import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
+import com.tasks.Categoria;
+import com.tasks.TaskPadrao;
+import java.awt.Color;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+
 public class PostitDetail extends JFrame{
     
-    public PostitDetail(String title, String data, String categ, Boolean feito, String desc) {
+    private Task tarefaOriginal;
+
+    public PostitDetail(Task task) {
         
+        this.tarefaOriginal = task;
+        String title = task.getTitulo();
+        String categ = (task.getCategoria()).getNome();
+        String desc = task.getDescricao();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        String data = task.getData().format(formatter);
+        Boolean feito = task.getFeito();
+        Color corFundo = (task.getCategoria()).getCor();
+
         // Criação da janela secundária
         this.setTitle("Detalhes: " + title);
         this.setSize(400, 400);
@@ -33,7 +51,11 @@ public class PostitDetail extends JFrame{
 
         // Painel principal representando o post-it em detalhe
         JPanel painelPrincipal = new JPanel(new BorderLayout());
-        painelPrincipal.setBackground(new Color(255, 255, 153));
+        if (corFundo != null) {
+            painelPrincipal.setBackground(corFundo);
+        } else {
+            painelPrincipal.setBackground(new Color(255, 255, 153));
+        }
         painelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
 
         // Criação de painel para abrigar o título centralizado
@@ -83,17 +105,11 @@ public class PostitDetail extends JFrame{
         // Adiciona o Topo ao Norte
         painelPrincipal.add(topPanel, BorderLayout.NORTH);
 
-
-        // =================================================================================
-        // 2. CENTRO (A Descrição)
-        // =================================================================================
         
-        // Labelzinha para indicar o campo (opcional, mas fica bom)
+        // Label para indicar o campo de descrição
         JTextArea lblDesc = new JTextArea("Descrição:");
         configurarAreaTexto(lblDesc, "Segoe Print", Font.BOLD, 14);
         lblDesc.setForeground(Color.DARK_GRAY);
-        // Precisamos adicionar o label no topPanel ou criar um painel wrapper pro centro.
-        // Vamos adicionar no final do topPanel para simplificar:
         topPanel.add(lblDesc);
 
 
