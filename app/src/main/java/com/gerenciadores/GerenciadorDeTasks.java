@@ -9,7 +9,6 @@ import java.util.UUID;
 import com.tasks.Task;
 import com.tasks.TaskPadrao;
 import com.tasks.TaskPeriodica;
-import com.categorias.Categoria;
 import com.usuarios.Usuario;
 
 public class GerenciadorDeTasks {

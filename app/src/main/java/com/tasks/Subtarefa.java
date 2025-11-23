@@ -9,7 +9,7 @@ public class Subtarefa {
     private String titulo;
     private String descricao;
     private boolean feito;
-    private UUID id;
+    private final UUID id;
 
     public Subtarefa(String titulo, String descricao) {
         this.titulo = titulo;
@@ -23,21 +23,33 @@ public class Subtarefa {
      */
     public void trocarFeito() {
         this.feito = !this.feito;
-        System.out.println("Subtarefa '" + this.titulo + "' agora está " + (this.feito ? "CONCLUÍDA" : "PENDENTE") + ".");
     }
 
-    // Getters e Setters
+    public String getTitulo() {
+        return this.titulo;
+    }
+
+    public String getDescricao() {
+        return this.descricao;
+    }
+
+    public boolean getFeito() { 
+        return this.feito; 
+    }
+
     public UUID getId() { 
-        return id; 
-    }
-    public String getTitulo() { 
-        return titulo; 
-    }
-    public boolean isFeito() { 
-        return feito; 
-    }
-    public void setFeito(boolean feito) { 
-        this.feito = feito; 
+        return this.id; 
     }
 
+    public void setTitulo(String novoTitulo) {
+        this.titulo = novoTitulo;
+    }
+
+    public void setDescricao(String novaDescricao) {
+        this.descricao = novaDescricao;
+    }
+
+    public void setFeito(boolean novoFeito) {
+        this.feito = novoFeito;
+    }
 }

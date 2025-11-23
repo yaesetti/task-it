@@ -9,7 +9,6 @@ import java.time.Duration;
 
 import com.excecoes.DataInvalidaException;
 import com.excecoes.UsuarioInvalidoException;
-import com.categorias.Categoria;
 import com.usuarios.Usuario;
 
 public abstract class TaskAbstrata implements Task {

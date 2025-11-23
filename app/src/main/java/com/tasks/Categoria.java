@@ -16,15 +16,25 @@ public class Categoria {
         this.cor = cor;
     }
 
-    // Getters
     public String getNome() { 
-        return nome; 
+        return this.nome; 
     }
     public String getDescricao() { 
-        return descricao; 
+        return this.descricao; 
     }
     public Color getCor() { 
-        return cor; 
+        return this.cor; 
     }
 
+    public void setNome(String novoNome) {
+        this.nome = novoNome;
+    }
+
+    public void setDescricao(String novaDescricao) {
+        this.descricao = novaDescricao;
+    }
+
+    public void setCor(Color novaCor) {
+        this.cor = novaCor;
+    }
 }
