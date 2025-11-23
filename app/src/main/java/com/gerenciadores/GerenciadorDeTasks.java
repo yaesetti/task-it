@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -86,5 +87,15 @@ public class GerenciadorDeTasks {
 
     public boolean apagarCategoria(String nome) {
         return this.categorias.removeIf(categoria -> nome.equals(categoria.getNome()));
+    }
+
+    public List<Task> getTasksPorCategoria(String nome) {
+        ArrayList<Task> temp = new ArrayList<>();
+        for (Task task : this.tasks) {
+            if (task.getCategoria().getNome().equals(nome)) {
+                temp.add(task);
+            }
+        }
+        return Collections.unmodifiableList(temp);
     }
 }
