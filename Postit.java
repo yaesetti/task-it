@@ -24,10 +24,12 @@ public class Postit extends JPanel {
 
     public Postit(String title, String data, String categ, Boolean feito) {
 
+        // Criação do painel principal do post-it
         this.setBackground(new Color(255, 255, 153));
         this.setPreferredSize(new Dimension(200, 200));
         this.setLayout(new BorderLayout());
 
+        // Criação de painel para abrigar o título centralizado
         JPanel Top = new JPanel();
         Top.setLayout(new GridLayout(0, 1, 4, 2));
         Top.setOpaque(false);
@@ -43,45 +45,45 @@ public class Postit extends JPanel {
         doc.setParagraphAttributes(0, doc.getLength(), center, false);
         Top.add(titleArea);
 
+        // Faz com que o título emule um botão que leva para a segunda visualização
         titleArea.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-
-        // 2. DETECTOR DE CLIQUES: Faz o texto agir como botão
         titleArea.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                // AQUI VOCÊ COLOCA A AÇÃO DO CLIQUE
-                System.out.println("Cliquei no título: " + title);
-                
-                // Exemplo: Mudar a cor do fundo para indicar seleção?
-                // setBackground(Color.PINK);
+                PostitDetail detail = new PostitDetail(title, data, categ, feito, "descrição...");
+                detail.setVisible(true);
             }
         });
 
+        // Painel auxiliar para abrigar a linha sob o título
         JPanel linha = new JPanel();
         linha.setBackground(new Color(0, 0, 0)); // Um amarelo mais escuro/queimado
-        linha.setPreferredSize(new Dimension(130, 2)); // 100px de largura, 2px de altura
-        linha.setMaximumSize(new Dimension(100, 2));   // Garante que não estique
-        
+        linha.setPreferredSize(new Dimension(130, 2)); 
+        linha.setMaximumSize(new Dimension(130, 2)); 
         // Wrapper para centralizar a linha horizontalmente
         JPanel linhaWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 5));
         linhaWrapper.setOpaque(false);
         linhaWrapper.add(linha);
-        
         Top.add(linhaWrapper);
 
-        dataArea = new JTextArea("  "+data);
+        // Painel para abrigar a data do prazo
+        dataArea = new JTextArea("  Prazo: "+data);
         this.configurarAreaTexto(dataArea, "Segoe Print", Font.BOLD, 13);
         Top.add(dataArea);
 
+        // Painel para abrigar a categoria da task
         categArea = new JTextArea("  Categoria: "+categ);
         this.configurarAreaTexto(categArea, "Segoe Print", Font.BOLD, 13);
         Top.add(categArea);
         this.add(Top, BorderLayout.NORTH);
 
+        // Criação de painel na base da janela 
         JPanel Down = new JPanel();
         Down.setLayout(new FlowLayout(FlowLayout.RIGHT));
         Down.setOpaque(false);
         Down.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 0));
+
+        // Painel em formato de caixa assinalável para marcar a conclusão
         feitoArea = new JCheckBox("Feito", feito); // O segundo parâmetro marca ou desmarca
         feitoArea.setOpaque(false);
         feitoArea.setFont(new Font("Segoe Print", Font.BOLD, 10));
