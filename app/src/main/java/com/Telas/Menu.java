@@ -12,7 +12,7 @@ import com.tasks.TaskAbstrata;
 import com.tasks.TaskPadrao;
 import com.usuarios.Usuario;
 
-public class AppBorderLayout {
+public class Menu {
 
     private Usuario user;
     private JPanel C2; // painel de post-its
@@ -38,9 +38,9 @@ public class AppBorderLayout {
         C1.setMaximumSize(new Dimension(Integer.MAX_VALUE, 50));
         Dimension tamanhoBotaoC1 = new Dimension(170, 40);
 
-        JButton btnDia = criarBotao("Dia", tamanhoBotaoC1);
-        JButton btnMes = criarBotao("Mês", tamanhoBotaoC1);
-        JButton btnTotal = criarBotao("Total", tamanhoBotaoC1);
+        JButton btnDia = fazerbotao("Dia", tamanhoBotaoC1);
+        JButton btnMes = fazerbotao("Mês", tamanhoBotaoC1);
+        JButton btnTotal = fazerbotao("Total", tamanhoBotaoC1);
 
         C1.add(btnDia);
         C1.add(btnMes);
@@ -66,9 +66,9 @@ public class AppBorderLayout {
         C3.setMaximumSize(new Dimension(Integer.MAX_VALUE, 100));
 
         Dimension tamanhoBotaoC3 = new Dimension(170, 60);
-        JButton btnUsuario = criarBotao("Usuário", tamanhoBotaoC3);
+        JButton btnUsuario = fazerbotao("Usuário", tamanhoBotaoC3);
 
-        JButton bntNewTask = criarBotao("Nova task", tamanhoBotaoC3);
+        JButton bntNewTask = fazerbotao("Nova task", tamanhoBotaoC3);
         bntNewTask.addActionListener(e -> criarNovaTask());
 
         C3.add(btnUsuario, BorderLayout.WEST);
@@ -87,8 +87,7 @@ public class AppBorderLayout {
         return frame;
     }
 
-    // Cria botão com cursor de mão
-    private JButton criarBotao(String texto, Dimension tamanho) {
+    private JButton fazerbotao(String texto, Dimension tamanho) {
         JButton btn = new JButton(texto);
         btn.setPreferredSize(tamanho);
         btn.setCursor(new Cursor(Cursor.HAND_CURSOR));
@@ -99,9 +98,7 @@ public class AppBorderLayout {
     private void atualizarPostIts() {
         C2.removeAll();
         for (TaskAbstrata task : user.TaskList) {
-            String titulo = task.getTitulo();
-            String dataStr = task.getData().toString();
-            Postit postit = new Postit(titulo, dataStr, "dataStr", false);
+            Postit postit = new Postit(task);
             C2.add(postit.PanelPostit());
         }
         C2.revalidate();
@@ -110,19 +107,17 @@ public class AppBorderLayout {
 
     // Cria nova task e adiciona ao painel
     private void criarNovaTask() {
-        Categoria categoria = new Categoria("nome_Usuario", "nome", Color.BLACK);
-        LocalDateTime data = LocalDateTime.now().plusDays(1); // exemplo: data futura
-        TaskPadrao padrao;
-        try {
-            padrao = new TaskPadrao("Nova Tarefa", "Descrição", categoria, data, null);
-            user.adicionarTask(padrao);
-        } catch (DataInvalidaException e1) {
-            e1.printStackTrace();
-            return;
-        }
+
+        InserirTarefa inserirTask = new InserirTarefa();
+        TaskAbstrata nova_task = inserirTask.TaskNova;
+
+        inserirTask.setVisible(true);
+    
+        user.adicionarTask(nova_task);
+ 
 
         // Cria Post-it visual
-        Postit newPostit = new Postit("Nova Tarefa", data.toString(), "dataStr", false);
+        Postit newPostit = new Postit(nova_task);
         C2.add(newPostit.PanelPostit());
         C2.revalidate();
         C2.repaint();
@@ -130,7 +125,7 @@ public class AppBorderLayout {
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
-            AppBorderLayout app = new AppBorderLayout();
+            Menu app = new Menu();
             TelaCadastroUsuario.salvarUsuario(); // garante que usuário exista
             app.criarJanela().setVisible(true);
         });
