@@ -105,7 +105,6 @@ public class InserirTarefa extends JFrame {
 
         if(deu_certo){
 
-
             // Criação da janela secundária
             this.setTitle("Task criada com sucesso :) ");
             this.setSize(400, 400);

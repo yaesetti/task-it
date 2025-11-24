@@ -64,5 +64,9 @@ public class Usuario implements java.io.Serializable{
         
         return false; 
     }
+
+    public int contarTasksAbertas() {
+        return this.TaskList.size();
+    }
     }
 

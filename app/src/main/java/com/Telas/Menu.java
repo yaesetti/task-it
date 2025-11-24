@@ -11,6 +11,7 @@ import com.tasks.Categoria;
 import com.tasks.TaskAbstrata;
 import com.tasks.TaskPadrao;
 import com.usuarios.Usuario;
+import com.Telas.*;
 
 public class Menu {
 
@@ -67,6 +68,7 @@ public class Menu {
 
         Dimension tamanhoBotaoC3 = new Dimension(170, 60);
         JButton btnUsuario = fazerbotao("Usuário", tamanhoBotaoC3);
+        btnUsuario.addActionListener(e -> verUsuario());
 
         JButton bntNewTask = fazerbotao("Nova task", tamanhoBotaoC3);
         bntNewTask.addActionListener(e -> criarNovaTask());
@@ -108,10 +110,10 @@ public class Menu {
     // Cria nova task e adiciona ao painel
     private void criarNovaTask() {
 
-        InserirTarefa inserirTask = new InserirTarefa();
-        TaskAbstrata nova_task = inserirTask.TaskNova;
+        InserirTarefa tela = new InserirTarefa();
+        TaskAbstrata nova_task = tela.TaskNova;
 
-        inserirTask.setVisible(true);
+        tela.setVisible(true);
     
         user.adicionarTask(nova_task);
  
@@ -121,6 +123,14 @@ public class Menu {
         C2.add(newPostit.PanelPostit());
         C2.revalidate();
         C2.repaint();
+    }
+
+    // Abre janela exibindo usuário
+    private void verUsuario() {
+
+        telaUsuario tela = new telaUsuario(this.user);
+        tela.setVisible(true);
+        
     }
 
     public static void main(String[] args) {
