@@ -25,10 +25,12 @@ import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import java.awt.Component;
 
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 public class PostitDetail extends JFrame{
     
@@ -39,6 +41,7 @@ public class PostitDetail extends JFrame{
         this.tarefaOriginal = task;
         String title = task.getTitulo();
         String categ = (task.getCategoria()).getNome();
+        String categDesc = (task.getCategoria()).getDescricao();
         String desc = task.getDescricao();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data = task.getData().format(formatter);
@@ -71,7 +74,6 @@ public class PostitDetail extends JFrame{
         titleArea.setText(title);
         titleArea.setOpaque(false);
         titleArea.setBorder(null);
-        // Fonte maior (24) para destaque
         titleArea.setFont(new Font("Segoe Print", Font.BOLD | Font.ITALIC, 24)); 
         titleArea.setEditable(false);
 
@@ -98,9 +100,16 @@ public class PostitDetail extends JFrame{
         topPanel.add(dataArea);
 
         // Painel para a categoria
-        JTextArea categArea = new JTextArea("Categoria: " + categ);
+        JTextArea categArea;
+        if (categDesc.equals("")) {
+            categArea = new JTextArea("Categoria: " + categ);
+        }
+        else {
+            categArea = new JTextArea("Categoria: " + categ + " -> "+ categDesc);
+        }
         configurarAreaTexto(categArea, "Segoe Print", Font.BOLD, 14);
         topPanel.add(categArea);
+
 
         // Adiciona um espaçamento antes da descrição
         topPanel.add(javax.swing.Box.createVerticalStrut(20));
@@ -108,30 +117,69 @@ public class PostitDetail extends JFrame{
         // Adiciona o Topo ao Norte
         painelPrincipal.add(topPanel, BorderLayout.NORTH);
 
+        // Área de Texto da Descrição
+        // Criamos um painel vertical para segurar o conteúdo que rola
         
-        // Label para indicar o campo de descrição
+        JPanel conteudoScroll = new JPanel();
+        conteudoScroll.setLayout(new BoxLayout(conteudoScroll, BoxLayout.Y_AXIS));
+        conteudoScroll.setOpaque(false);
+
+        // --- A. Seção Descrição ---
         JTextArea lblDesc = new JTextArea("Descrição:");
         configurarAreaTexto(lblDesc, "Segoe Print", Font.BOLD, 14);
         lblDesc.setForeground(Color.DARK_GRAY);
-        topPanel.add(lblDesc);
+        conteudoScroll.add(lblDesc);
 
-        // Área de Texto da Descrição
         JTextArea areaDescricao = new JTextArea(desc);
         areaDescricao.setFont(new Font("Segoe Print", Font.PLAIN, 16));
         areaDescricao.setLineWrap(true);
         areaDescricao.setWrapStyleWord(true);
         areaDescricao.setOpaque(false);
-        areaDescricao.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-        areaDescricao.setEditable(false);
+        areaDescricao.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
+        areaDescricao.setEditable(false); // Apenas leitura no detalhe
+        conteudoScroll.add(areaDescricao);
 
-        // ScrollPane transparente (sem borda feia)
-        JScrollPane scroll = new JScrollPane(areaDescricao);
+        // --- B. Seção Subtarefas (CENTRALIZADA) ---
+        List<Subtarefa> listaSubs = task.getSubtarefas();
+
+        if (listaSubs != null && !listaSubs.isEmpty()) {
+            
+            conteudoScroll.add(Box.createVerticalStrut(20)); 
+
+            JTextArea lblSub = new JTextArea("Subtarefas:");
+            configurarAreaTexto(lblSub, "Segoe Print", Font.BOLD, 14);
+            lblSub.setForeground(Color.DARK_GRAY);
+            
+            // --- MUDANÇA 1: Centraliza o título "Subtarefas" ---
+            lblSub.setAlignmentX(Component.CENTER_ALIGNMENT); 
+            conteudoScroll.add(lblSub);
+
+            for (Subtarefa sub : listaSubs) {
+                JCheckBox chkSub = new JCheckBox(sub.getTitulo(), sub.getFeito());
+                chkSub.setOpaque(false);
+                chkSub.setFont(new Font("Segoe Print", Font.PLAIN, 14));
+                chkSub.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); 
+                
+                // --- MUDANÇA 2: Centraliza o Checkbox na tela ---
+                chkSub.setAlignmentX(Component.CENTER_ALIGNMENT);
+                // (Opcional) Centraliza o texto e o ícone dentro do próprio componente checkbox
+                chkSub.setHorizontalAlignment(JCheckBox.CENTER);
+                
+                // Opcional: Desabilitar se for só visualização, ou manter true se quiser que clique
+                // chkSub.setEnabled(false); 
+
+                conteudoScroll.add(chkSub);
+            }
+        }
+
+        // --- Configuração do ScrollPane ---
+        JScrollPane scroll = new JScrollPane(conteudoScroll);
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);
-        scroll.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(220, 220, 100))); // Borda sutil
+        // Borda sutil apenas para delimitar a área de conteúdo
+        scroll.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0, 0, 0, 30))); 
         
         painelPrincipal.add(scroll, BorderLayout.CENTER);
-
 
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.setOpaque(false);
