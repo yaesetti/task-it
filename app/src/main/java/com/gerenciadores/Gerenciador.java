@@ -17,7 +17,7 @@ import com.usuarios.Usuario;
 import com.usuarios.UsuarioAdministrador;
 import com.usuarios.UsuarioPadrao;
 
-public class Gerenciador {
+public class Gerenciador implements java.io.Serializable {
     private final List<Usuario> usuarios;
     private final Map<UUID, String> senhas;
     private final GerenciadorDeTasks gerTasks;

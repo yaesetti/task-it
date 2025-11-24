@@ -136,7 +136,7 @@ public class Menu {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             Menu app = new Menu();
-            TelaCadastroUsuario.salvarUsuario(); // garante que usuário exista
+            TelaCadastroUsuario.salvarUsuario(); // isso era uma gambiarra que fiz antes
             app.criarJanela().setVisible(true);
         });
     }
