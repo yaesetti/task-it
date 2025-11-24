@@ -1,6 +1,7 @@
 package com.gerenciadores;
 
 import java.awt.Color;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.time.Duration;
 import java.util.ArrayList;
@@ -17,13 +18,15 @@ import com.excecoes.DataInvalidaException;
 import com.excecoes.UsuarioInvalidoException;
 import com.usuarios.Usuario;
 
-public class GerenciadorDeTasks {
+public class GerenciadorDeTasks implements Serializable {
     private ArrayList<Task> tasks;
     private ArrayList<Categoria> categorias;
+    private ArrayList<Usuario> usuariosAdm;
 
     public GerenciadorDeTasks() {
         this.tasks = new ArrayList<>();
         this.categorias = new ArrayList<>();
+        this.usuariosAdm = new ArrayList<>();
     }
     /**
      * Cria uma TaskPadrao (sem recorrencia) e a coloca na lista de tasks do GerenciadorDeTasks
@@ -31,13 +34,13 @@ public class GerenciadorDeTasks {
      * @param descricao
      * @param categoria
      * @param data
-     * @param usuariosDonos
+     * @param usuarioCriador
      */
-    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador, List<Usuario> usuariosAdm) {
+    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador) {
         if (usuarioCriador.getMaxTasks() <= usuarioCriador.getTaskIds().size()) {
             return false;
         }
-        List<Usuario> usuariosDonos = new ArrayList<>(usuariosAdm);
+        List<Usuario> usuariosDonos = new ArrayList<>(this.usuariosAdm);
         usuariosDonos.add(usuarioCriador);
 
         try {
@@ -63,15 +66,15 @@ public class GerenciadorDeTasks {
      * @param descricao
      * @param categoria
      * @param data
-     * @param usuariosDonos
+     * @param usuarioCriador
      * @param recorrencia
      * @param dataFinal
      */
-    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador, List<Usuario> usuariosAdm, Duration recorrencia, LocalDateTime dataFinal) {
+    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador, Duration recorrencia, LocalDateTime dataFinal) {
         if (usuarioCriador.getMaxTasks() <= usuarioCriador.getTaskIds().size()) {
             return false;
         }
-        List<Usuario> usuariosDonos = new ArrayList<>(usuariosAdm);
+        List<Usuario> usuariosDonos = new ArrayList<>(this.usuariosAdm);
         usuariosDonos.add(usuarioCriador);
 
         try {
@@ -147,5 +150,13 @@ public class GerenciadorDeTasks {
             flag |= task.removerUsuarioDono(id);
         }
         return flag;
+    }
+
+    public void adicionarUsuarioAdm(Usuario novoUsuarioAdm) {
+        this.usuariosAdm.add(novoUsuarioAdm);
+    }
+
+    public boolean removerUsuarioAdm(UUID id) {
+        return this.usuariosAdm.removeIf(usuario -> usuario.getId().equals(id));
     }
 }

@@ -1,5 +1,6 @@
 package com.gerenciadores;
 
+import java.io.Serializable;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -18,7 +19,7 @@ import com.usuarios.Usuario;
 import com.usuarios.UsuarioAdministrador;
 import com.usuarios.UsuarioPadrao;
 
-public class Gerenciador implements java.io.Serializable {
+public class Gerenciador implements Serializable {
     private final List<Usuario> usuarios;
     private final Map<UUID, String> senhas;
     private final GerenciadorDeTasks gerTasks;
@@ -106,7 +107,8 @@ public class Gerenciador implements java.io.Serializable {
 
         boolean removido = this.usuarios.removeIf(usuario -> usuario.getId().equals(id));
         this.senhas.remove(id);
-        gerTasks.removerUsuarioDeTodasTasks(id);
+        this.gerTasks.removerUsuarioDeTodasTasks(id);
+        this.gerTasks.removerUsuarioAdm(id);
         
         return removido;
     }

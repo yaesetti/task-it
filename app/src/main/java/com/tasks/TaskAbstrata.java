@@ -1,5 +1,6 @@
 package com.tasks;
 
+import java.io.Serializable;
 import java.util.UUID;
 import java.util.List;
 import java.util.ArrayList;
@@ -11,7 +12,7 @@ import com.excecoes.DataInvalidaException;
 import com.excecoes.UsuarioInvalidoException;
 import com.usuarios.Usuario;
 
-public abstract class TaskAbstrata implements Task, java.io.Serializable {
+public abstract class TaskAbstrata implements Task, Serializable {
     private String titulo;
     private String descricao;
     private Categoria categoria;

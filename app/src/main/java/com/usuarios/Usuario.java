@@ -1,5 +1,6 @@
 package com.usuarios;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 import com.tasks.Task;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Usuario implements java.io.Serializable{
+public class Usuario implements Serializable {
     private String nome;
     private String senha;
     private String imagePath;
