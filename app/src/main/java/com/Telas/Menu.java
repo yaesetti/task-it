@@ -40,8 +40,13 @@ public class Menu {
         Dimension tamanhoBotaoC1 = new Dimension(170, 40);
 
         JButton btnDia = fazerbotao("Dia", tamanhoBotaoC1);
+        btnDia.addActionListener(e -> atualizaDia());
+
         JButton btnMes = fazerbotao("Mês", tamanhoBotaoC1);
+        btnMes.addActionListener(e -> atualizaMes());
+
         JButton btnTotal = fazerbotao("Total", tamanhoBotaoC1);
+        btnTotal.addActionListener(e -> atualizarPostIts());
 
         C1.add(btnDia);
         C1.add(btnMes);
@@ -102,6 +107,51 @@ public class Menu {
         for (TaskAbstrata task : user.TaskList) {
             Postit postit = new Postit(task);
             C2.add(postit.PanelPostit());
+        }
+        C2.revalidate();
+        C2.repaint();
+    }
+
+    // Exibe apenas post-its com prazo para o dia atual
+    private void atualizaDia() {
+        C2.removeAll(); // Limpa o painel
+        
+        LocalDateTime hoje = LocalDateTime.now();
+        
+        for (TaskAbstrata task : user.TaskList) {
+            // Verifica se a data não é nula antes de comparar
+            if (task.getData() != null) {
+                // Compara Ano e Dia do Ano
+                boolean mesmoAno = task.getData().getYear() == hoje.getYear();
+                boolean mesmoDia = task.getData().getDayOfYear() == hoje.getDayOfYear();
+                
+                if (mesmoAno && mesmoDia) {
+                    Postit postit = new Postit(task);
+                    C2.add(postit.PanelPostit());
+                }
+            }
+        }
+        C2.revalidate();
+        C2.repaint();
+    }
+
+     private void atualizaMes() {
+        C2.removeAll(); // Limpa o painel
+        
+        LocalDateTime hoje = LocalDateTime.now();
+        
+        for (TaskAbstrata task : user.TaskList) {
+            // Verifica se a data não é nula antes de comparar
+            if (task.getData() != null) {
+                // Compara Ano e Dia do Ano
+                boolean mesmoAno = task.getData().getYear() == hoje.getYear();
+                boolean mesmoMes = task.getData().getMonthValue() == hoje.getMonthValue();
+                
+                if (mesmoAno && mesmoMes) {
+                    Postit postit = new Postit(task);
+                    C2.add(postit.PanelPostit());
+                }
+            }
         }
         C2.revalidate();
         C2.repaint();
