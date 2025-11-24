@@ -1,3 +1,5 @@
+package com.Telas;
+
 import java.awt.BorderLayout;
 import java.awt.Color; // Não é mais estritamente necessário, mas mantido
 import java.awt.Dimension;
@@ -17,15 +19,17 @@ import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 
-import com.tasks.Categoria;
-import com.tasks.TaskPadrao;
+import com.excecoes.DataInvalidaException;
+import com.tasks.*;
+
+
 import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
 public class AppBorderLayout {
 
-    public JFrame criarJanela() {
+    public JFrame criarJanela() throws DataInvalidaException {
         
         // Criação da tela principal
         JFrame frame = new JFrame("POST-IT");
@@ -137,7 +141,12 @@ public class AppBorderLayout {
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             AppBorderLayout app = new AppBorderLayout();
-            app.criarJanela().setVisible(true);
+            try {
+                app.criarJanela().setVisible(true);
+            } catch (DataInvalidaException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
         });
     }
 }

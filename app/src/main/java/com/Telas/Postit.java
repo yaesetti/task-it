@@ -1,3 +1,7 @@
+package com.Telas;
+
+import com.tasks.*;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -16,7 +20,10 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 import com.tasks.Categoria;
-import com.tasks.TaskPadrao;import java.awt.Color;
+import com.tasks.TaskPadrao;
+
+
+import java.awt.Color;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 
@@ -37,11 +44,11 @@ public class Postit extends JPanel {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
         String data = task.getData().format(formatter);
         Boolean feito = task.getFeito();
-        Color corFundo = (this.getCategoria()).getCor();
+        Color corFundo = (task.getCategoria()).getCor();
 
         // Criação do painel principal do post-it
         JPanel painelPrincipal = new JPanel(new BorderLayout());
-        if (corFundo != null && this.getCategoria() != null) {
+        if (corFundo != null && task.getCategoria() != null) {
             this.setBackground(corFundo);
         } else {
             this.setBackground(new Color(255, 255, 153));
