@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class Usuario implements Serializable {
+public class Usuario implements java.io.Serializable {
     private String nome;
     private String senha;
     private String imagePath;
@@ -53,8 +53,13 @@ public class Usuario implements Serializable {
         this.imagePath = novoImagePath;
     }
 
-    public void adicionarTask(TaskAbstrata task) {
-            this.TaskList.add(task);
+    public void adicionarTask(TaskAbstrata nova_task) {
+            this.TaskList.add((TaskAbstrata) nova_task);
+    }
+
+    protected void addTaskList(List<TaskAbstrata>  lista){
+        this.TaskList = lista;
+
     }
 
     public boolean removerTask(UUID id) {

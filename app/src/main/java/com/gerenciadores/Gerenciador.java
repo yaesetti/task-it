@@ -14,6 +14,7 @@ import java.util.UUID;
 
 import com.excecoes.NomeDuplicadoException;
 import com.serializacao.FuncoesSerial;
+import com.tasks.TaskAbstrata;
 import com.usuarios.TipoUsuario;
 import com.usuarios.Usuario;
 import com.usuarios.UsuarioAdministrador;
@@ -46,6 +47,51 @@ public class Gerenciador implements Serializable {
 
     public GerenciadorDeTasks getGerTasks() {
         return this.gerTasks;
+    }
+
+    public void setUsuarios(List<Usuario> usuarios) {
+        this.usuarios.clear(); 
+        this.usuarios.addAll(usuarios); 
+        
+        this.senhas.clear(); 
+        for (Usuario u : usuarios) {
+            String senhaOuHash = u.getSenha();
+            
+            this.senhas.put(u.getId(), senhaOuHash); 
+        }
+    }
+
+
+
+    public void criarUsuario(TipoUsuario tipo, String nome, String senha, String imagePath, List<TaskAbstrata> ListaTarefas) throws NomeDuplicadoException {
+        for (Usuario usuario : this.usuarios) {
+            if (usuario.getNome().equals(nome)) {
+                throw new NomeDuplicadoException("Nome Duplicado: Ja existe um usuario com este nome!");
+            }
+        }
+
+        Usuario usuario;
+        if (tipo == TipoUsuario.ADMINISTRADOR) {
+            usuario = new UsuarioAdministrador(nome, senha, imagePath);
+            usuario.TaskList = ListaTarefas;
+        }
+        else {
+            usuario = new UsuarioPadrao(nome, senha, imagePath);
+            usuario.TaskList = ListaTarefas;
+        }
+
+        this.usuarios.add(usuario);
+        String hashed = sha256Base64(senha);
+        if (hashed != null) {
+            this.senhas.put(usuario.getId(), hashed);
+        }
+        else {
+            this.senhas.put(usuario.getId(), senha);
+        }
+
+        FuncoesSerial.salvarUsuarios(this);
+
+
     }
 
 

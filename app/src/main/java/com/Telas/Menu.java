@@ -6,6 +6,7 @@ import javax.swing.*;
 import javax.swing.border.Border;
 
 import com.excecoes.DataInvalidaException;
+import com.gerenciadores.Gerenciador;
 import com.serializacao.*;
 import com.tasks.Categoria;
 import com.tasks.TaskAbstrata;
@@ -17,8 +18,11 @@ public class Menu {
 
     private Usuario user;
     private JPanel C2; 
-    public JFrame criarJanela(Usuario user1) {
+    private Gerenciador ger;
 
+    public JFrame criarJanela(Usuario user1, Gerenciador gerenciado) {
+
+        this.ger = gerenciado;
         this.user = user1;
         JFrame frame = new JFrame("POST-IT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -94,12 +98,13 @@ public class Menu {
     // Atualiza painel de post-its
     private void atualizarPostIts() {
         C2.removeAll();
-        for (TaskAbstrata task : user.TaskList) {
+        for (TaskAbstrata task : this.user.TaskList) {
             Postit postit = new Postit(task);
             C2.add(postit.PanelPostit());
         }
         C2.revalidate();
         C2.repaint();
+        
     }
 
     // Cria nova task e adiciona ao painel
@@ -110,7 +115,9 @@ public class Menu {
 
         tela.setVisible(true);
     
-        user.adicionarTask(nova_task);
+        this.user.adicionarTask(nova_task);
+        FuncoesSerial.salvarUsuarios(ger);
+        System.out.println("add no user" + this.user.getNome());
  
 
         // Cria Post-it visual

@@ -57,7 +57,7 @@ public class TelaSimplesGerenciador extends JDialog {
             if (u.getNome().equals(nome) && ger.validarSenha(u.getId(), senha)) {
                 Menu menus = new Menu();
                 usuarioLogado = u;
-                menus.criarJanela(this.usuarioLogado).setVisible(true);
+                menus.criarJanela(this.usuarioLogado,ger).setVisible(true);
                 dispose();
                 return;
             }
