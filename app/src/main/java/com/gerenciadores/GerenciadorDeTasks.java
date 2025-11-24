@@ -12,8 +12,9 @@ import com.tasks.Task;
 import com.tasks.TaskPadrao;
 import com.tasks.TaskPeriodica;
 import com.tasks.Categoria;
-import com.excecoes.CategoriaDuplicadaException;
+import com.excecoes.NomeDuplicadoException;
 import com.excecoes.DataInvalidaException;
+import com.excecoes.UsuarioInvalidoException;
 import com.usuarios.Usuario;
 
 public class GerenciadorDeTasks {
@@ -32,12 +33,28 @@ public class GerenciadorDeTasks {
      * @param data
      * @param usuariosDonos
      */
-    public void criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, List<Usuario> usuariosDonos) {
+    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador, List<Usuario> usuariosAdm) {
+        if (usuarioCriador.getMaxTasks() <= usuarioCriador.getTaskIds().size()) {
+            return false;
+        }
+        List<Usuario> usuariosDonos = new ArrayList<>(usuariosAdm);
+        usuariosDonos.add(usuarioCriador);
+
         try {
-            this.tasks.add(new TaskPadrao(titulo, descricao, categoria, data, usuariosDonos));
+            TaskPadrao task = new TaskPadrao(titulo, descricao, categoria, data, usuariosDonos);
+
+            for (Usuario usuario : usuariosDonos) {
+                try {
+                    task.adicionarUsuarioDono(usuario);
+                } catch (UsuarioInvalidoException e) {
+                }
+            }
+            this.tasks.add(task);
+
         } catch (DataInvalidaException e) {
             System.err.println(e.getMessage());
         }
+        return true;
     }
 
     /**
@@ -50,12 +67,28 @@ public class GerenciadorDeTasks {
      * @param recorrencia
      * @param dataFinal
      */
-    public void criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, List<Usuario> usuariosDonos, Duration recorrencia, LocalDateTime dataFinal) {
+    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador, List<Usuario> usuariosAdm, Duration recorrencia, LocalDateTime dataFinal) {
+        if (usuarioCriador.getMaxTasks() <= usuarioCriador.getTaskIds().size()) {
+            return false;
+        }
+        List<Usuario> usuariosDonos = new ArrayList<>(usuariosAdm);
+        usuariosDonos.add(usuarioCriador);
+
         try {
-            this.tasks.add(new TaskPeriodica(titulo, descricao, categoria, data, usuariosDonos, recorrencia, dataFinal));
+            TaskPeriodica task = new TaskPeriodica(titulo, descricao, categoria, data, usuariosDonos, recorrencia, dataFinal);
+
+            for (Usuario usuario : usuariosDonos) {
+                try {
+                    task.adicionarUsuarioDono(usuario);
+                } catch (UsuarioInvalidoException e) {
+                }
+            }
+            this.tasks.add(task);
+
         } catch (DataInvalidaException e) {
             System.err.println(e.getMessage());
         }
+        return true;
     }
 
     public boolean apagarTask(UUID id) {
@@ -76,19 +109,19 @@ public class GerenciadorDeTasks {
         return null;
     }
 
-    public void criarCategoria(String nome, String descricao, Color cor) throws CategoriaDuplicadaException {
+    public void criarCategoria(String nome, String descricao, Color cor) throws NomeDuplicadoException {
         for (Categoria categoria : this.categorias) {
             if (categoria.getNome().equals(nome)) {
-                throw new CategoriaDuplicadaException();
+                throw new NomeDuplicadoException("Nome Duplicado: Ja existe uma categoria com este nome!");
             }
         }
         this.categorias.add(new Categoria(nome, descricao, cor));
     }
 
-    public void criarCategoria(String nome, Color cor) throws CategoriaDuplicadaException {
+    public void criarCategoria(String nome, Color cor) throws NomeDuplicadoException {
         for (Categoria categoria : this.categorias) {
             if (categoria.getNome().equals(nome)) {
-                throw new CategoriaDuplicadaException();
+                throw new NomeDuplicadoException("Nome Duplicado: Ja existe uma categoria com este nome!");
             }
         }
         this.categorias.add(new Categoria(nome, "", cor));
@@ -106,5 +139,13 @@ public class GerenciadorDeTasks {
             }
         }
         return Collections.unmodifiableList(temp);
+    }
+
+    public boolean removerUsuarioDeTodasTasks(UUID id) {
+        boolean flag = false;
+        for (Task task : this.tasks) {
+            flag |= task.removerUsuarioDono(id);
+        }
+        return flag;
     }
 }

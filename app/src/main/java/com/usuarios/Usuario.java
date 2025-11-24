@@ -2,6 +2,7 @@ package com.usuarios;
 
 import java.util.UUID;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public abstract class Usuario {
@@ -9,7 +10,7 @@ public abstract class Usuario {
     private String senha;
     private String imagePath;
     private final UUID id;
-    private List<UUID> taskIds;
+    private final List<UUID> taskIds;
 
     public Usuario(String nome, String senha, String imagePath) {
         this.nome = nome;
@@ -47,13 +48,23 @@ public abstract class Usuario {
         this.imagePath = novoImagePath;
     }
 
-    public void adicionarTask(UUID id) {
-        if (!this.taskIds.contains(id)) {
-            this.taskIds.add(id);
+    public boolean adicionarTask(UUID id) {
+        if (this.taskIds.contains(id) || this.taskIds.size() >= this.getMaxTasks()) {
+            return false;
         }
+        this.taskIds.add(id);
+        return true;
     }
 
     public boolean removerTask(UUID id) {
         return this.taskIds.remove(id);
     }
+
+    public List<UUID> getTaskIds() {
+        return Collections.unmodifiableList(this.taskIds);
+    }
+
+    public abstract TipoUsuario getTipoUsuario();
+
+    public abstract int getMaxTasks();
 }
