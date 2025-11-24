@@ -48,7 +48,6 @@ public class TelaSimplesGerenciador extends JDialog {
         btnLogin.addActionListener(e -> fazerLogin());
         btnCadastro.addActionListener(e -> fazerCadastro());
     }
-
     private void fazerLogin() {
         String nome = nomeField.getText().trim();
         String senha = new String(senhaField.getPassword());
