@@ -12,6 +12,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.excecoes.NomeDuplicadoException;
+import com.serializacao.FuncoesSerial;
 import com.usuarios.TipoUsuario;
 import com.usuarios.Usuario;
 import com.usuarios.UsuarioAdministrador;
@@ -45,6 +46,8 @@ public class Gerenciador implements java.io.Serializable {
     public GerenciadorDeTasks getGerTasks() {
         return this.gerTasks;
     }
+
+
 
     public void criarUsuario(TipoUsuario tipo, String nome, String senha, String imagePath) throws NomeDuplicadoException {
         for (Usuario usuario : this.usuarios) {

@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 
 import com.gerenciadores.Gerenciador;
+import com.serializacao.FuncoesSerial;
 import com.excecoes.NomeDuplicadoException;
 import com.usuarios.Usuario;
 import com.usuarios.TipoUsuario;
@@ -55,8 +56,8 @@ public class TelaSimplesGerenciador extends JDialog {
         for (Usuario u : ger.getUsuarios()) {
             if (u.getNome().equals(nome) && ger.validarSenha(u.getId(), senha)) {
                 Menu menus = new Menu();
-                menus.criarJanela();
                 usuarioLogado = u;
+                menus.criarJanela(this.usuarioLogado).setVisible(true);
                 dispose();
                 return;
             }
@@ -89,6 +90,8 @@ public class TelaSimplesGerenciador extends JDialog {
     // EXEMPLO DE USO:
     public static void main(String[] args) {
         Gerenciador ger = new Gerenciador();
+        FuncoesSerial.carregarUsuarios(ger);
+
         TelaSimplesGerenciador t = new TelaSimplesGerenciador(null, ger);
         t.setVisible(true);
 

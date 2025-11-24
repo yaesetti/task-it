@@ -18,11 +18,10 @@ public class Menu {
     private Usuario user;
     private JPanel C2; // painel de post-its
 
-    public JFrame criarJanela() {
+    public JFrame criarJanela(Usuario user1) {
 
         // Carrega usuário
-        user = FuncoesSerial.carregarUsuario("Dado/abc.ser");
-
+        this.user = user1;
         // Tela principal
         JFrame frame = new JFrame("POST-IT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -133,11 +132,11 @@ public class Menu {
         
     }
 
-    public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> {
-            Menu app = new Menu();
-            TelaCadastroUsuario.salvarUsuario(); // isso era uma gambiarra que fiz antes
-            app.criarJanela().setVisible(true);
-        });
-    }
+    // public static void main(String[] args) {
+    //     SwingUtilities.invokeLater(() -> {
+    //         Menu app = new Menu();
+    //         TelaCadastroUsuario.salvarUsuario(); // isso era uma gambiarra que fiz antes
+    //         #app.criarJanela().setVisible(true);
+    //     });
+    // }
 }
