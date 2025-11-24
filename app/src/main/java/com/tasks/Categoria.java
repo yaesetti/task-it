@@ -5,7 +5,7 @@ import java.awt.Color; // Para simular o tipo Color
 /**
  * Representa uma categoria para classificar tarefas.
  */
-public class Categoria {
+public class Categoria implements java.io.Serializable {
     private String nome;
     private String descricao;
     private Color cor;

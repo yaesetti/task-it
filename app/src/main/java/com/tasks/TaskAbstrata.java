@@ -11,7 +11,7 @@ import com.excecoes.DataInvalidaException;
 import com.excecoes.UsuarioInvalidoException;
 import com.usuarios.Usuario;
 
-public abstract class TaskAbstrata implements Task {
+public abstract class TaskAbstrata implements Task, java.io.Serializable {
     private String titulo;
     private String descricao;
     private Categoria categoria;
@@ -158,7 +158,6 @@ public abstract class TaskAbstrata implements Task {
             throw new UsuarioInvalidoException("Usuario Invalido: Este usuario já eh dono desta task!");
         }
         this.usuariosDonos.add(novoUsuarioDono);
-        novoUsuarioDono.adicionarTask(this.id);
     }
 
     @Override

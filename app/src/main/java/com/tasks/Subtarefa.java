@@ -5,7 +5,7 @@ import java.util.UUID;
 /**
  * Representa um item de trabalho menor que faz parte de uma Task.
  */
-public class Subtarefa {
+public class Subtarefa  implements java.io.Serializable{
     private String titulo;
     private String descricao;
     private boolean feito;
