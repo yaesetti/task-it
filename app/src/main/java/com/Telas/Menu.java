@@ -16,17 +16,13 @@ import com.Telas.*;
 public class Menu {
 
     private Usuario user;
-    private JPanel C2; // painel de post-its
-
+    private JPanel C2; 
     public JFrame criarJanela(Usuario user1) {
 
-        // Carrega usuário
         this.user = user1;
-        // Tela principal
         JFrame frame = new JFrame("POST-IT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(800, 600); // tamanho maior para melhor visualização
-
+        frame.setSize(800, 600);
         // Painel principal C0
         JPanel C0 = new JPanel();
         C0.setLayout(new BoxLayout(C0, BoxLayout.Y_AXIS));

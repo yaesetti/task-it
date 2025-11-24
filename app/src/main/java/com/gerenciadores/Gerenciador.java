@@ -73,6 +73,10 @@ public class Gerenciador implements Serializable {
         else {
             this.senhas.put(usuario.getId(), senha);
         }
+
+        FuncoesSerial.salvarUsuarios(this);
+
+
     }
 
     public boolean validarSenha(UUID id, String fornecida) {
