@@ -2,9 +2,11 @@ package com.usuarios;
 
 import java.util.UUID;
 
+import com.tasks.Task;
 import com.tasks.TaskAbstrata;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Usuario implements java.io.Serializable{
@@ -67,6 +69,21 @@ public class Usuario implements java.io.Serializable{
 
     public int contarTasksAbertas() {
         return this.TaskList.size();
+    }
+
+    public int getMaxTasks() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getMaxTasks'");
+    }
+
+    public TipoUsuario getTipoUsuario() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTipoUsuario'");
+    }
+
+    public ArrayList<Task> getTaskIds() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getTaskIds'");
     }
     }
 
