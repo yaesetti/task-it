@@ -92,7 +92,7 @@ public class TelaSimplesGerenciador extends JDialog {
     // EXEMPLO DE USO:
     public static void main(String[] args) {
         Gerenciador ger = new Gerenciador();
-        FuncoesSerial.carregarUsuarios(ger);
+        FuncoesSerial.carregarGerenciador();
 
         TelaSimplesGerenciador t = new TelaSimplesGerenciador(null, ger);
         t.setVisible(true);

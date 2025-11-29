@@ -94,7 +94,7 @@ public class Gerenciador implements Serializable {
             this.senhas.put(usuario.getId(), senha);
         }
 
-        FuncoesSerial.salvarUsuarios(this);
+        FuncoesSerial.salvarGerenciador(this);
     }
 
     public boolean validarSenha(UUID id, String fornecida) {
@@ -119,6 +119,7 @@ public class Gerenciador implements Serializable {
         else {
             this.senhas.put(id, nova);
         }
+        FuncoesSerial.salvarGerenciador(this);
         return true;
     }
 
@@ -132,6 +133,7 @@ public class Gerenciador implements Serializable {
         this.gerTasks.removerUsuarioDeTodasTasks(id);
         this.gerTasks.removerUsuarioAdm(id);
         
+        FuncoesSerial.salvarGerenciador(this);
         return removido;
     }
 }

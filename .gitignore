@@ -9,3 +9,7 @@ build
 .vscode
 *.swp
 *.log
+
+# Ignore serialization files
+*.ser
+dados

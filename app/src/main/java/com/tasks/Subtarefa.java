@@ -1,11 +1,12 @@
 package com.tasks;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 /**
  * Representa um item de trabalho menor que faz parte de uma Task.
  */
-public class Subtarefa  implements java.io.Serializable{
+public class Subtarefa  implements Serializable {
     private String titulo;
     private String descricao;
     private boolean feito;

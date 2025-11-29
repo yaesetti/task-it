@@ -49,9 +49,9 @@ public class GerenciadorDeTasks implements Serializable {
      * @param data
      * @param usuarioCriador
      */
-    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador) {
+    public Task criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador) {
         if (usuarioCriador.getMaxTasks() <= usuarioCriador.getTaskIds().size()) {
-            return false;
+            return null;
         }
         List<Usuario> usuariosDonos = new ArrayList<>(this.usuariosAdm);
         usuariosDonos.add(usuarioCriador);
@@ -62,15 +62,17 @@ public class GerenciadorDeTasks implements Serializable {
             for (Usuario usuario : usuariosDonos) {
                 try {
                     task.adicionarUsuarioDono(usuario);
+                    usuario.adicionarTask(task.getId());
                 } catch (UsuarioInvalidoException e) {
                 }
             }
             this.tasks.add(task);
+            return task;
 
         } catch (DataInvalidaException e) {
             System.err.println(e.getMessage());
+            return null;
         }
-        return true;
     }
 
     /**
@@ -83,9 +85,9 @@ public class GerenciadorDeTasks implements Serializable {
      * @param recorrencia
      * @param dataFinal
      */
-    public boolean criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador, Duration recorrencia, LocalDateTime dataFinal) {
+    public Task criarTask(String titulo, String descricao, Categoria categoria, LocalDateTime data, Usuario usuarioCriador, Duration recorrencia, LocalDateTime dataFinal) {
         if (usuarioCriador.getMaxTasks() <= usuarioCriador.getTaskIds().size()) {
-            return false;
+            return null;
         }
         List<Usuario> usuariosDonos = new ArrayList<>(this.usuariosAdm);
         usuariosDonos.add(usuarioCriador);
@@ -96,15 +98,18 @@ public class GerenciadorDeTasks implements Serializable {
             for (Usuario usuario : usuariosDonos) {
                 try {
                     task.adicionarUsuarioDono(usuario);
+                    usuario.adicionarTask(task.getId());
                 } catch (UsuarioInvalidoException e) {
+                    System.err.println(e.getMessage());
                 }
             }
             this.tasks.add(task);
+            return task;
 
         } catch (DataInvalidaException e) {
             System.err.println(e.getMessage());
+            return null;
         }
-        return true;
     }
 
     public boolean apagarTask(UUID id) {

@@ -5,21 +5,21 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 
 import com.gerenciadores.Gerenciador;
-import com.serializacao.*;
+import com.serializacao.FuncoesSerial;
 import com.tasks.Task;
-import com.tasks.TaskAbstrata;
+import com.tasks.Categoria;
 import com.usuarios.Usuario;
 
 public class Menu {
 
     private Usuario user;
-    private JPanel C2; 
+    private JPanel C2;
     private Gerenciador ger;
 
     public JFrame criarJanela(Usuario user1, Gerenciador gerenciador) {
@@ -114,7 +114,7 @@ public class Menu {
             C2.repaint();
             return;
         }
-        
+
         if (this.user.getTaskIds() == null || this.user.getTaskIds().isEmpty()) {
             C2.revalidate();
             C2.repaint();
@@ -145,7 +145,7 @@ public class Menu {
     }
 
     /**
-     * Filtra as Tasks de modo a exibir somente as que possuem data <= dia atual
+     * Filtra as Tasks de modo a exibir somente as que possuem data == dia atual
      */
     private void atualizaDia() {
         if (C2 == null) return;
@@ -180,7 +180,7 @@ public class Menu {
     }
 
     /**
-     * Filtra as Tasks de modo a exibir somente as que possuem data <= mes atual
+     * Filtra as Tasks de modo a exibir somente as que possuem data no mês atual
      */
     private void atualizaMes() {
         if (C2 == null) return;
@@ -216,25 +216,51 @@ public class Menu {
     }
 
     /**
-     * Cria uma Task nova e adiciona ao painel
+     * Cria uma Task nova usando a API de GerenciadorDeTasks (criarTask(...))
+     * e adiciona ao painel. Também transfere subtarefas do diálogo para a Task criada.
      */
     private void criarNovaTask() {
-
         InserirTarefa tela = new InserirTarefa();
-        Task nova_task = tela.TaskNova;
-
+        // mostra diálogo e aguarda (o diálogo usa JOptionPane)
         tela.setVisible(true);
-    
-        this.user.adicionarTask(nova_task.getId());
-        FuncoesSerial.salvarUsuarios(ger);
-        System.out.println("add no user" + this.user.getNome());
- 
 
-        // Cria Post-it visual
-        Postit newPostit = new Postit(nova_task);
-        C2.add(newPostit.PanelPostit());
-        C2.revalidate();
-        C2.repaint();
+        // se usuário cancelou, encerra
+        if (!tela.isDeuCerto()) {
+            return;
+        }
+
+        // monta categoria a partir do diálogo
+        Categoria categoria = new Categoria(tela.getTituloCategoria(), tela.getDescCategoria(), tela.getCorCategoria());
+
+        // chama API centralizada para criar a task (valida limites, data, etc.)
+        Task criada = this.ger.getGerTasks().criarTask(
+            tela.getTitulo(),
+            tela.getDescricao(),
+            categoria,
+            tela.getData(),
+            this.user
+        );
+
+        if (criada == null) {
+            JOptionPane.showMessageDialog(null, "Não foi possível criar a task (limite atingido ou data inválida).", "Erro", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        // copia subtarefas do diálogo para a Task criada
+        List<String> subs = tela.getSubtarefas();
+        if (subs != null) {
+            for (String s : subs) {
+                if (s != null && !s.trim().isEmpty()) {
+                    criada.adicionarSubtarefa(s.trim());
+                }
+            }
+        }
+
+        // persiste / atualiza UI
+        // OBS: hoje FuncoesSerial.salvarUsuarios salva apenas usuário/credenciais.
+        // Se quiser persistir tasks entre reinícios, precisar salvar o Gerenciador todo.
+        FuncoesSerial.salvarGerenciador(ger);
+        atualizarPostIts();
     }
 
     /**

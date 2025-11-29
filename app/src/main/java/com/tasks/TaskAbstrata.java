@@ -18,7 +18,7 @@ public abstract class TaskAbstrata implements Task, Serializable {
     private Categoria categoria;
     private final UUID id;
     private boolean feito;
-    private ArrayList<Subtarefa> subtarefas;
+    private final ArrayList<Subtarefa> subtarefas;
     private LocalDateTime data;
     private ArrayList<Usuario> usuariosDonos;
 

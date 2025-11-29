@@ -1,11 +1,12 @@
 package com.tasks;
 
 import java.awt.Color; // Para simular o tipo Color
+import java.io.Serializable;
 
 /**
  * Representa uma categoria para classificar tarefas.
  */
-public class Categoria implements java.io.Serializable {
+public class Categoria implements Serializable {
     private String nome;
     private String descricao;
     private Color cor;
