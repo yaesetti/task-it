@@ -1,18 +1,20 @@
-package com.Telas;
+package com.telas;
 
 import java.awt.*;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
+import java.util.List;
+import java.util.Map;
+
 import javax.swing.*;
 import javax.swing.border.Border;
 
-import com.excecoes.DataInvalidaException;
 import com.gerenciadores.Gerenciador;
 import com.serializacao.*;
-import com.tasks.Categoria;
+import com.tasks.Task;
 import com.tasks.TaskAbstrata;
-import com.tasks.TaskPadrao;
 import com.usuarios.Usuario;
-import com.Telas.*;
 
 public class Menu {
 
@@ -20,9 +22,9 @@ public class Menu {
     private JPanel C2; 
     private Gerenciador ger;
 
-    public JFrame criarJanela(Usuario user1, Gerenciador gerenciado) {
+    public JFrame criarJanela(Usuario user1, Gerenciador gerenciador) {
 
-        this.ger = gerenciado;
+        this.ger = gerenciador;
         this.user = user1;
         JFrame frame = new JFrame("POST-IT");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -102,70 +104,128 @@ public class Menu {
 
     // Atualiza painel de post-its
     private void atualizarPostIts() {
+        if (C2 == null) {
+            return;
+        }
         C2.removeAll();
-        for (TaskAbstrata task : this.user.TaskList) {
-            Postit postit = new Postit(task);
-            C2.add(postit.PanelPostit());
+
+        if (this.user == null || this.ger == null) {
+            C2.revalidate();
+            C2.repaint();
+            return;
         }
+        
+        if (this.user.getTaskIds() == null || this.user.getTaskIds().isEmpty()) {
+            C2.revalidate();
+            C2.repaint();
+            return;
+        }
+
+        List<UUID> userTaskIds = this.user.getTaskIds();
+        List<Task> tasks = this.ger.getGerTasks().getTasks();
+
+        // debug (remova depois)
+        System.out.println("atualizarPostIts: userTaskIds=" + (userTaskIds == null ? 0 : userTaskIds.size())
+            + ", totalTasks=" + (tasks == null ? 0 : tasks.size()));
+
+        if (tasks != null && !tasks.isEmpty() && userTaskIds != null && !userTaskIds.isEmpty()) {
+            for (Task task : tasks) {
+                if (task == null || task.getId() == null) {
+                    continue;
+                }
+                if (userTaskIds.contains(task.getId())) {
+                    Postit postit = new Postit(task);
+                    C2.add(postit.PanelPostit());
+                }
+            }
+        }
+
         C2.revalidate();
         C2.repaint();
-        
     }
 
-    // Exibe apenas post-its com prazo para o dia atual
+    /**
+     * Filtra as Tasks de modo a exibir somente as que possuem data <= dia atual
+     */
     private void atualizaDia() {
-        C2.removeAll(); // Limpa o painel
-        
-        LocalDateTime hoje = LocalDateTime.now();
-        
-        for (TaskAbstrata task : user.TaskList) {
-            // Verifica se a data não é nula antes de comparar
-            if (task.getData() != null) {
-                // Compara Ano e Dia do Ano
-                boolean mesmoAno = task.getData().getYear() == hoje.getYear();
-                boolean mesmoDia = task.getData().getDayOfYear() == hoje.getDayOfYear();
-                
-                if (mesmoAno && mesmoDia) {
-                    Postit postit = new Postit(task);
-                    C2.add(postit.PanelPostit());
+        if (C2 == null) return;
+        C2.removeAll();
+
+        if (this.user == null || this.ger == null) {
+            C2.revalidate();
+            C2.repaint();
+            return;
+        }
+
+        List<UUID> userTaskIds = this.user.getTaskIds();
+        List<Task> tasks = this.ger.getGerTasks() == null ? null : this.ger.getGerTasks().getTasks();
+
+        if (tasks != null && !tasks.isEmpty() && userTaskIds != null && !userTaskIds.isEmpty()) {
+            java.time.LocalDate hoje = java.time.LocalDate.now();
+            for (Task task : tasks) {
+                if (task == null || task.getId() == null) continue;
+                if (!userTaskIds.contains(task.getId())) continue;
+
+                if (task.getData() != null) {
+                    if (task.getData().toLocalDate().isEqual(hoje)) {
+                        Postit postit = new Postit(task);
+                        C2.add(postit.PanelPostit());
+                    }
                 }
             }
         }
+
         C2.revalidate();
         C2.repaint();
     }
 
-     private void atualizaMes() {
-        C2.removeAll(); // Limpa o painel
-        
-        LocalDateTime hoje = LocalDateTime.now();
-        
-        for (TaskAbstrata task : user.TaskList) {
-            // Verifica se a data não é nula antes de comparar
-            if (task.getData() != null) {
-                // Compara Ano e Dia do Ano
-                boolean mesmoAno = task.getData().getYear() == hoje.getYear();
-                boolean mesmoMes = task.getData().getMonthValue() == hoje.getMonthValue();
-                
-                if (mesmoAno && mesmoMes) {
-                    Postit postit = new Postit(task);
-                    C2.add(postit.PanelPostit());
+    /**
+     * Filtra as Tasks de modo a exibir somente as que possuem data <= mes atual
+     */
+    private void atualizaMes() {
+        if (C2 == null) return;
+        C2.removeAll();
+
+        if (this.user == null || this.ger == null) {
+            C2.revalidate();
+            C2.repaint();
+            return;
+        }
+
+        List<UUID> userTaskIds = this.user.getTaskIds();
+        List<Task> tasks = this.ger.getGerTasks() == null ? null : this.ger.getGerTasks().getTasks();
+
+        if (tasks != null && !tasks.isEmpty() && userTaskIds != null && !userTaskIds.isEmpty()) {
+            java.time.LocalDate hoje = java.time.LocalDate.now();
+            for (Task task : tasks) {
+                if (task == null || task.getId() == null) continue;
+                if (!userTaskIds.contains(task.getId())) continue;
+
+                if (task.getData() != null) {
+                    java.time.LocalDate d = task.getData().toLocalDate();
+                    if (d.getYear() == hoje.getYear() && d.getMonthValue() == hoje.getMonthValue()) {
+                        Postit postit = new Postit(task);
+                        C2.add(postit.PanelPostit());
+                    }
                 }
             }
         }
+
         C2.revalidate();
         C2.repaint();
     }
 
-    // Cria nova task e adiciona ao painel
+    /**
+     * Cria uma Task nova e adiciona ao painel
+     */
     private void criarNovaTask() {
 
         InserirTarefa tela = new InserirTarefa();
-        TaskAbstrata nova_task = tela.TaskNova;
+        Task nova_task = tela.TaskNova;
 
         tela.setVisible(true);
     
-        this.user.adicionarTask(nova_task);
+        this.user.adicionarTask(nova_task.getId());
         FuncoesSerial.salvarUsuarios(ger);
         System.out.println("add no user" + this.user.getNome());
  
@@ -177,19 +237,11 @@ public class Menu {
         C2.repaint();
     }
 
-    // Abre janela exibindo usuário
+    /**
+     * Abre a janela que mostra as informações do usuario
+     */
     private void verUsuario() {
-
         telaUsuario tela = new telaUsuario(this.user);
         tela.setVisible(true);
-        
     }
-
-    // public static void main(String[] args) {
-    //     SwingUtilities.invokeLater(() -> {
-    //         Menu app = new Menu();
-    //         TelaCadastroUsuario.salvarUsuario(); // isso era uma gambiarra que fiz antes
-    //         #app.criarJanela().setVisible(true);
-    //     });
-    // }
 }

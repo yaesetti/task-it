@@ -1,4 +1,4 @@
-package com.Telas;
+package com.telas;
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
@@ -54,7 +54,7 @@ public class telaUsuario extends JFrame {
         painelImagemWrapper.setOpaque(false); // Mantém o fundo do painelPrincipal
 
         // C1.1.1: Label da Imagem
-        ImageIcon imagemRedimensionada = redimensionarImagem("Imagens/Homer.jpeg", 100, 100);
+        ImageIcon imagemRedimensionada = redimensionarImagem(getClass().getResource("/Imagens/Homer.jpeg").getPath(), 100, 100);
         JLabel labelImagem = new JLabel(imagemRedimensionada);
 
         // Para garantir que o JLabel (e, portanto, a imagem) não exceda um tamanho fixo,

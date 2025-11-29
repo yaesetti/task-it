@@ -19,15 +19,28 @@ import com.excecoes.UsuarioInvalidoException;
 import com.usuarios.Usuario;
 
 public class GerenciadorDeTasks implements Serializable {
-    private ArrayList<Task> tasks;
-    private ArrayList<Categoria> categorias;
-    private ArrayList<Usuario> usuariosAdm;
+    private final ArrayList<Task> tasks;
+    private final ArrayList<Categoria> categorias;
+    private final ArrayList<Usuario> usuariosAdm;
 
     public GerenciadorDeTasks() {
         this.tasks = new ArrayList<>();
         this.categorias = new ArrayList<>();
         this.usuariosAdm = new ArrayList<>();
     }
+
+    public List<Task> getTasks() {
+        return Collections.unmodifiableList(this.tasks);
+    }
+
+    public List<Categoria> getCategorias() {
+        return Collections.unmodifiableList(this.categorias);
+    }
+
+    public List<Usuario> getUsuariosAdm() {
+        return Collections.unmodifiableList(this.usuariosAdm);
+    }
+
     /**
      * Cria uma TaskPadrao (sem recorrencia) e a coloca na lista de tasks do GerenciadorDeTasks
      * @param titulo 

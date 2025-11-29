@@ -1,15 +1,12 @@
-
-package com.Telas;
+package com.telas;
 
 import com.tasks.*;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
@@ -19,41 +16,51 @@ import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
-
-import com.tasks.Categoria;
-import com.tasks.TaskPadrao;
-
-
 import java.awt.Color;
-import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 public class Postit extends JPanel {
 
-    private JTextPane titleArea;
-    private JTextArea dataArea;
-    private JTextArea categArea;
-    private JCheckBox feitoArea;
-    private Task tarefaOriginal;
+    private final JTextPane titleArea;
+    private final JTextArea dataArea;
+    private final JTextArea categArea;
+    private final JCheckBox feitoArea;
+    private final Task tarefaOriginal;
 
     public Postit(Task task) {
+        if (task == null) {
+            throw new IllegalArgumentException("IllegalArgumentException: Essa task é null");
+        }
 
         this.tarefaOriginal = task;
         String title = task.getTitulo();
-        String categ = (task.getCategoria()).getNome();
+
+        Categoria categoria = task.getCategoria();
+        String categ;
+        Color corFundo;
+        if (categoria == null) {
+            categ = "Sem categoria";
+            corFundo = new Color(255, 255, 153);
+        }
+        else {
+            categ = categoria.getNome();
+            corFundo = categoria.getCor();
+        }
+
         String desc = task.getDescricao();
+
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        String data = task.getData().format(formatter);
-        Boolean feito = task.getFeito();
-        Color corFundo = (task.getCategoria()).getCor();
+        String data;
+        if (task.getData() == null) {
+            data = "Sem data";
+        }
+        else {
+            data = task.getData().format(formatter);
+        }
+
+        boolean feito = task.getFeito();
 
         // Criação do painel principal do post-it
-        JPanel painelPrincipal = new JPanel(new BorderLayout());
-        if (corFundo != null && task.getCategoria() != null) {
-            this.setBackground(corFundo);
-        } else {
-            this.setBackground(new Color(255, 255, 153));
-        }
+        this.setBackground(corFundo);
         this.setPreferredSize(new Dimension(200, 200));
         this.setLayout(new BorderLayout());
 
@@ -70,7 +77,16 @@ public class Postit extends JPanel {
         StyledDocument doc = titleArea.getStyledDocument();
         SimpleAttributeSet center = new SimpleAttributeSet();
         StyleConstants.setAlignment(center, StyleConstants.ALIGN_CENTER);
-        doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        if (doc.getLength() > 0) {
+            doc.setParagraphAttributes(0, doc.getLength(), center, false);
+        }
+        else {
+            try {
+                doc.insertString(0, title, null);
+            } catch (javax.swing.text.BadLocationException e) {
+                e.printStackTrace();
+            }
+        }
         Top.add(titleArea);
 
         // Faz com que o título emule um botão que leva para a segunda visualização

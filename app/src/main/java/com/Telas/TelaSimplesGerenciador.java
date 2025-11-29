@@ -1,8 +1,7 @@
-package com.Telas;
+package com.telas;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 import com.gerenciadores.Gerenciador;
 import com.serializacao.FuncoesSerial;
@@ -48,9 +47,13 @@ public class TelaSimplesGerenciador extends JDialog {
         btnLogin.addActionListener(e -> fazerLogin());
         btnCadastro.addActionListener(e -> fazerCadastro());
     }
-    private void fazerLogin() {
+    private void fazerLogin() throws NullPointerException {
         String nome = nomeField.getText().trim();
         String senha = new String(senhaField.getPassword());
+
+        if (ger.getUsuarios() == null) {
+            throw new NullPointerException("NullPointerException: Nao existem usuarios ainda");
+        }
 
         for (Usuario u : ger.getUsuarios()) {
             if (u.getNome().equals(nome) && ger.validarSenha(u.getId(), senha)) {

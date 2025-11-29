@@ -1,11 +1,15 @@
-package com.Telas;
+package com.telas;
 
-import com.tasks.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Color;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -14,22 +18,26 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JComboBox; 
-import javax.swing.BoxLayout;
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Map;
+import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
-import com.excecoes.DataInvalidaException;
-
+/**
+ * Janela/dialog para coletar os dados de uma nova Task.
+ * Não cria a Task aqui — apenas coleta campos e fornece getters para quem chamou.
+ */
 public class InserirTarefa extends JFrame {
+    private String titulo;
+    private String descricao;
+    private String tituloCategoria;
+    private String descCategoria;
+    private LocalDateTime data;
+    private Color corCategoria;
+    private final List<String> subtarefas = new ArrayList<>();
+    private boolean deuCerto = false;
 
-    protected TaskAbstrata TaskNova = null;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-    boolean deu_certo = false;
-    
+
     // Mapeamento de nomes de cores para objetos Color do AWT
     private static final Map<String, Color> COLOR_MAP = new HashMap<>();
     static {
@@ -38,25 +46,23 @@ public class InserirTarefa extends JFrame {
         COLOR_MAP.put("Atenção - amarelo", Color.YELLOW.brighter());
     }
 
-    public InserirTarefa(){
-
+    public InserirTarefa() {
         // Campos de entrada
         JTextField tituloField = new JTextField(15);
         JTextField descricaoField = new JTextField(15);
         JTextField tituloCategoriaField = new JTextField(15);
         JTextField descCategoriaField = new JTextField(15);
-        JTextField dataHoraField = new JTextField("2026-12-25 08:30", 15); // Sugestão de format
+        JTextField dataHoraField = new JTextField("2026-12-25 08:30", 15); // Sugestão de formato
         JComboBox<String> corCategoriaBox = new JComboBox<>(COLOR_MAP.keySet().toArray(new String[0]));
         JTextArea subTarefasArea = new JTextArea(3, 15);
         subTarefasArea.setLineWrap(true);
         subTarefasArea.setWrapStyleWord(true);
         JScrollPane scrollSubTarefas = new JScrollPane(subTarefasArea);
 
-
         JPanel mainContainer = new JPanel(new BorderLayout());
-        
-        // Painel A: Apenas para os campos de linha única (GridLayout fica compacto aqui)
-        JPanel fieldsPanel = new JPanel(new GridLayout(0, 2, 5, 5)); // (0 linhas = automático)
+
+        // Painel A: campos de linha única
+        JPanel fieldsPanel = new JPanel(new GridLayout(0, 2, 5, 5));
         fieldsPanel.add(new JLabel("Título da Task:"));
         fieldsPanel.add(tituloField);
         fieldsPanel.add(new JLabel("Descrição da Task:"));
@@ -70,85 +76,112 @@ public class InserirTarefa extends JFrame {
         fieldsPanel.add(new JLabel("Data (AAAA-MM-DD HH:mm):"));
         fieldsPanel.add(dataHoraField);
 
-        // Painel B: Apenas para a Subtarefa (Fica embaixo)
+        // Painel B: subtarefas
         JPanel subPanel = new JPanel(new BorderLayout());
-        subPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0)); // Espacinho no topo
+        subPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
         subPanel.add(new JLabel("Subtarefas (uma por linha):"), BorderLayout.NORTH);
         subPanel.add(scrollSubTarefas, BorderLayout.CENTER);
 
-        // Juntando tudo no container principal
         mainContainer.add(fieldsPanel, BorderLayout.NORTH);
         mainContainer.add(subPanel, BorderLayout.CENTER);
 
-        // Agora passamos o 'mainContainer' para o JOptionPane em vez do inputPanel antigo
         int result = JOptionPane.showConfirmDialog(
             this,
-            mainContainer, // Mudança aqui
+            mainContainer,
             "Insira os Dados da Task",
             JOptionPane.OK_CANCEL_OPTION,
             JOptionPane.PLAIN_MESSAGE
         );
 
         if (result == JOptionPane.OK_OPTION) {
-            deu_certo = true;
-            
-            String titulo = tituloField.getText();
-            String descricao = descricaoField.getText();
-            String tituloCategoria = tituloCategoriaField.getText();
-            String DescCategoria = descCategoriaField.getText();
+            // pega valores dos campos
+            this.titulo = tituloField.getText();
+            this.descricao = descricaoField.getText();
+            this.tituloCategoria = tituloCategoriaField.getText();
+            this.descCategoria = descCategoriaField.getText();
             String dataHoraStr = dataHoraField.getText();
             String corSelecionadaStr = (String) corCategoriaBox.getSelectedItem();
-            Color corCategoria = COLOR_MAP.get(corSelecionadaStr);
-            
-            LocalDateTime data = null;
-            
-            try {
-                data = LocalDateTime.parse(dataHoraStr, FORMATTER);
-                
-                Categoria categoria = new Categoria(tituloCategoria, DescCategoria, corCategoria);
-                this.TaskNova = new TaskPadrao(titulo, descricao, categoria, data, null);
+            this.corCategoria = COLOR_MAP.get(corSelecionadaStr);
 
+            try {
+                this.data = LocalDateTime.parse(dataHoraStr, FORMATTER);
+
+                // subtarefas
                 String textoSubtarefas = subTarefasArea.getText();
                 String[] linhas = textoSubtarefas.split("\\r?\\n");
-                
                 for (String linha : linhas) {
                     if (!linha.trim().isEmpty()) {
-                        this.TaskNova.adicionarSubtarefa(linha.trim());
+                        this.subtarefas.add(linha.trim());
                     }
                 }
 
-            } catch (DateTimeParseException e) {
-                 JOptionPane.showMessageDialog(null, "Formato de data errado. Use AAAA-MM-DD HH:mm", "Erro", JOptionPane.ERROR_MESSAGE);
-                 deu_certo = false; // Impede abrir a janela de sucesso se der erro
-            } catch (DataInvalidaException ex) {
-                 JOptionPane.showMessageDialog(null, "Erro na Task: " + ex.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-                 deu_certo = false;
-            } catch (Exception ex) {
-                 ex.printStackTrace();
-                 deu_certo = false;
-            }
+                this.deuCerto = true;
 
+            } catch (DateTimeParseException e) {
+                JOptionPane.showMessageDialog(null, "Formato de data errado. Use AAAA-MM-DD HH:mm", "Erro", JOptionPane.ERROR_MESSAGE);
+                this.deuCerto = false;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                this.deuCerto = false;
+            }
         } else {
+            this.deuCerto = false;
             this.dispose();
         }
 
-
-        if(deu_certo){
-
-            // Criação da janela secundária
+        if (this.deuCerto) {
+            // janela de confirmação simples
             this.setTitle("Task criada com sucesso :) ");
             this.setSize(400, 400);
             this.setLocationRelativeTo(null);
             this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
             this.setLayout(new BorderLayout());
-            // Configuração da janela principal após a criação bem-sucedida
             JPanel painelPrincipal = new JPanel(new BorderLayout());
-            painelPrincipal.setBackground(new java.awt.Color(255, 255, 153));
+            painelPrincipal.setBackground(new Color(255, 255, 153));
             painelPrincipal.setBorder(BorderFactory.createEmptyBorder(15, 20, 15, 20));
-            JLabel labelGif = new JLabel(new ImageIcon("Imagens/kid-meme.gif"));
-            painelPrincipal.add(labelGif, BorderLayout.CENTER);
+            try {
+                ImageIcon icon = new ImageIcon(getClass().getResource("/Imagens/kid-meme.gif"));
+                JLabel labelGif = new JLabel(icon);
+                painelPrincipal.add(labelGif, BorderLayout.CENTER);
+            } catch (Exception ignored) {
+                // recurso pode não existir em tempo de desenvolvimento; não falhar por isso
+            }
             this.add(painelPrincipal);
             this.setVisible(true);
         }
+    }
+
+    // Getters para o chamador (Menu) usar os valores coletados
+
+    public boolean isDeuCerto() {
+        return deuCerto;
+    }
+
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public String getTituloCategoria() {
+        return tituloCategoria;
+    }
+
+    public String getDescCategoria() {
+        return descCategoria;
+    }
+
+    public LocalDateTime getData() {
+        return data;
+    }
+
+    public Color getCorCategoria() {
+        return corCategoria;
+    }
+
+    public List<String> getSubtarefas() {
+        return new ArrayList<>(subtarefas);
     }
 }
