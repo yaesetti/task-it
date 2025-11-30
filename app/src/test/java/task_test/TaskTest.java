@@ -52,16 +52,17 @@ public class TaskTest {
     @Test
     void testCalcularTempoRestante() {
         Duration restante = task.calcularTempoRestante();
-        // A duração deve ser maior que zero
+       
         assertFalse(restante.isNegative());
         assertFalse(restante.isZero());
+        assertTrue(restante.compareTo(Duration.ofDays(5)) < 0);
     }
 
     @Test
     void testConstrutorDataPassado() {
         LocalDateTime dataPassada = LocalDateTime.now().minusDays(1);
         assertThrows(DataInvalidaException.class, () -> {
-            new TaskPadrao("Titulo", "D", categoria, dataPassada, null);
+            new TaskPadrao("Titulo", "Desc", categoria, dataPassada, null);
         });
     }
 

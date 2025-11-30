@@ -99,7 +99,7 @@ public class UsuarioTest {
     // Teste relacionado ao limite de tasks do UsuárioPadrão //
     
     @Test
-    void testLimiteTarefasPadrao() {
+    void testLimiteTaskPadrao() {
 
         for (int i = 0; i < 50; i++) {
             usuario.adicionarTask(UUID.randomUUID());
@@ -112,7 +112,7 @@ public class UsuarioTest {
     }
 
     @Test
-    void testLimiteTarefasAdmin() {
+    void testLimiteTaskAdmin() {
 
         for (int i = 0; i < 50; i++) {
             admin.adicionarTask(UUID.randomUUID());
