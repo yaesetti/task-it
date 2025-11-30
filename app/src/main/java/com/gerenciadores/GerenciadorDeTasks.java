@@ -93,12 +93,7 @@ public class GerenciadorDeTasks implements Serializable {
             TaskPeriodica task = new TaskPeriodica(titulo, descricao, categoria, data, usuariosDonos, recorrencia, dataFinal);
 
             for (Usuario usuario : usuariosDonos) {
-                try {
-                    task.adicionarUsuarioDono(usuario);
-                    usuario.adicionarTask(task.getId());
-                } catch (UsuarioInvalidoException e) {
-                    System.err.println(e.getMessage());
-                }
+                usuario.adicionarTask(task.getId());
             }
             this.tasks.add(task);
             return task;
