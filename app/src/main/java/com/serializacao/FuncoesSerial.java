@@ -74,6 +74,9 @@ public final class FuncoesSerial {
             Object obj = ois.readObject();
 
             if (obj instanceof Gerenciador) {
+                for (Usuario usuario : ((Gerenciador) obj).getUsuarios()) {
+                    System.out.println("Usuarios: " + usuario.getNome());
+                }
                 return (Gerenciador) obj;
             }
 

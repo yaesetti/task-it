@@ -60,12 +60,9 @@ public class GerenciadorDeTasks implements Serializable {
             TaskPadrao task = new TaskPadrao(titulo, descricao, categoria, data, usuariosDonos);
 
             for (Usuario usuario : usuariosDonos) {
-                try {
-                    task.adicionarUsuarioDono(usuario);
-                    usuario.adicionarTask(task.getId());
-                } catch (UsuarioInvalidoException e) {
-                }
+                usuario.adicionarTask(task.getId());
             }
+            
             this.tasks.add(task);
             return task;
 
