@@ -28,12 +28,6 @@ Dentre elas estão:
 ## Gravação e Leitura de Arquivos:
 - `JavaIO Serializable`
 
-# TODO:
-- Botão de "feito"
-- Documentação
-- Task periódica
-- Apagar task
-
 # Diagrama UML:
 Este diagrama UML está bem diferente do enviado na Atividade 3, mas representa de maneira muito mais organizada e fiel o estado atual do projeto.<br>
 **Classes responsáveis pela interface gráfica e seu funcionamento foram desconsideradas na elaboração do diagrama, uma vez que não têm relação direta com as classes do projeto. De mesmo modo, os getters e setters foram ocultados a fim de manter um maior grau de clareza e simplicidade, todos os atributos possuem getters e setters**
