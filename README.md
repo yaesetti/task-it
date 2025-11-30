@@ -17,4 +17,4 @@ Bernardo Correia Prados Nascimento - RA: 245837
 - **REFAZER O UML INTEIRO**
 
 # Diagrama UML
-![](diagrama/diagrama-finalizado-transparente.svg)
+![](diagrama/diagrama-finalizado.svg)
