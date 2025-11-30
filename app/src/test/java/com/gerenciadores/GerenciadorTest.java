@@ -1,4 +1,4 @@
-package gerenciador_test;
+package com.gerenciadores;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
