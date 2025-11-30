@@ -9,8 +9,8 @@ Bernardo Correia Prados Nascimento - RA: 245837
 
 ## Diferenças com a Proposta Original:
 Houveram algumas mudanças com relação a proposta original devido a um prazo de tempo curto, e uma maior dificuldade com o manejo da interface gráfica do que o esperado. Dentre elas estão:
-- O conceito de "metas" foi substituído por "Subtarefas"
-- Tasks compartilhadas entre diferentes usuários
+- O conceito de "metas" foi aglutinado por "subtarefas"
+- Tasks não serã compartilhadas entre diferentes usuários
 
 # TODO:
 - Botão de "feito"
