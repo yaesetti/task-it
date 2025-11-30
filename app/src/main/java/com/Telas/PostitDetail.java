@@ -2,6 +2,8 @@ package com.telas;
 
 
 import com.tasks.*;
+import com.gerenciadores.Gerenciador; 
+import com.serializacao.FuncoesSerial; 
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -26,6 +28,8 @@ import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 import java.awt.Component;
+import java.awt.event.ItemEvent;
+import java.util.ArrayList;
 
 import java.awt.Color;
 import java.time.LocalDateTime;
@@ -35,10 +39,18 @@ import java.util.List;
 public class PostitDetail extends JFrame{
     
     private Task tarefaOriginal;
+    private Gerenciador gerenciador;
+    private List<JCheckBox> checkBoxesSubtarefas;
+    private JCheckBox chkFeito; 
+    private boolean flagAtualizacao = false;
 
-    public PostitDetail(Task task) {
+    public PostitDetail(Task task, Gerenciador ger) {
         
         this.tarefaOriginal = task;
+        this.gerenciador = ger;
+        this.checkBoxesSubtarefas = new ArrayList<>();
+
+        // Informações básicas da task que serão exibidas na janela secundária
         String title = task.getTitulo();
         String categ = (task.getCategoria()).getNome();
         String categDesc = (task.getCategoria()).getDescricao();
@@ -109,22 +121,14 @@ public class PostitDetail extends JFrame{
         }
         configurarAreaTexto(categArea, "Segoe Print", Font.BOLD, 14);
         topPanel.add(categArea);
-
-
-        // Adiciona um espaçamento antes da descrição
         topPanel.add(javax.swing.Box.createVerticalStrut(20));
-
-        // Adiciona o Topo ao Norte
         painelPrincipal.add(topPanel, BorderLayout.NORTH);
 
         // Área de Texto da Descrição
-        // Criamos um painel vertical para segurar o conteúdo que rola
-        
         JPanel conteudoScroll = new JPanel();
         conteudoScroll.setLayout(new BoxLayout(conteudoScroll, BoxLayout.Y_AXIS));
         conteudoScroll.setOpaque(false);
 
-        // --- A. Seção Descrição ---
         JTextArea lblDesc = new JTextArea("Descrição:");
         configurarAreaTexto(lblDesc, "Segoe Print", Font.BOLD, 14);
         lblDesc.setForeground(Color.DARK_GRAY);
@@ -136,12 +140,11 @@ public class PostitDetail extends JFrame{
         areaDescricao.setWrapStyleWord(true);
         areaDescricao.setOpaque(false);
         areaDescricao.setBorder(BorderFactory.createEmptyBorder(0, 5, 0, 5));
-        areaDescricao.setEditable(false); // Apenas leitura no detalhe
+        areaDescricao.setEditable(false);
         conteudoScroll.add(areaDescricao);
 
-        // --- B. Seção Subtarefas (CENTRALIZADA) ---
+        // Áreade de texto/interação com subtarefas
         List<Subtarefa> listaSubs = task.getSubtarefas();
-
         if (listaSubs != null && !listaSubs.isEmpty()) {
             
             conteudoScroll.add(Box.createVerticalStrut(20)); 
@@ -150,37 +153,44 @@ public class PostitDetail extends JFrame{
             configurarAreaTexto(lblSub, "Segoe Print", Font.BOLD, 14);
             lblSub.setForeground(Color.DARK_GRAY);
             
-            // --- MUDANÇA 1: Centraliza o título "Subtarefas" ---
             lblSub.setAlignmentX(Component.CENTER_ALIGNMENT); 
             conteudoScroll.add(lblSub);
 
             for (Subtarefa sub : listaSubs) {
+
+                // Área com caixa de conclusão para cada subtarefa
                 JCheckBox chkSub = new JCheckBox(sub.getTitulo(), sub.getFeito());
                 chkSub.setOpaque(false);
                 chkSub.setFont(new Font("Segoe Print", Font.PLAIN, 14));
                 chkSub.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 0)); 
                 
-                // --- MUDANÇA 2: Centraliza o Checkbox na tela ---
                 chkSub.setAlignmentX(Component.CENTER_ALIGNMENT);
-                // (Opcional) Centraliza o texto e o ícone dentro do próprio componente checkbox
                 chkSub.setHorizontalAlignment(JCheckBox.CENTER);
                 
-                // Opcional: Desabilitar se for só visualização, ou manter true se quiser que clique
-                // chkSub.setEnabled(false); 
+                chkSub.addItemListener(e -> {
 
-                conteudoScroll.add(chkSub);
+                    if (flagAtualizacao) return;
+
+                    boolean isChecked = (e.getStateChange() == ItemEvent.SELECTED);
+                    sub.setFeito(isChecked);
+                    
+                    verificarTodasSubtarefas();
+                    if (gerenciador != null) FuncoesSerial.salvarGerenciador(gerenciador);
+                });
+
+                checkBoxesSubtarefas.add(chkSub);
+                conteudoScroll.add(chkSub); 
             }
         }
 
-        // --- Configuração do ScrollPane ---
         JScrollPane scroll = new JScrollPane(conteudoScroll);
         scroll.setOpaque(false);
         scroll.getViewport().setOpaque(false);
-        // Borda sutil apenas para delimitar a área de conteúdo
         scroll.setBorder(BorderFactory.createMatteBorder(1, 1, 1, 1, new Color(0, 0, 0, 30))); 
         
         painelPrincipal.add(scroll, BorderLayout.CENTER);
 
+        // Área com caixa de conclusão da task
         JPanel bottomPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT));
         bottomPanel.setOpaque(false);
         bottomPanel.setBorder(BorderFactory.createEmptyBorder(10, 0, 0, 0));
@@ -189,11 +199,33 @@ public class PostitDetail extends JFrame{
         chkFeito.setOpaque(false);
         chkFeito.setFont(new Font("Segoe Print", Font.BOLD, 14));
         
+        chkFeito.addItemListener(e -> {
+
+            if (flagAtualizacao) return; 
+        
+            flagAtualizacao = true;
+
+           try {
+                boolean isChecked = (e.getStateChange() == ItemEvent.SELECTED);
+                
+                tarefaOriginal.setFeito(isChecked);
+                tarefaOriginal.setFeitoTodasSubtarefas(isChecked);
+                
+                for (JCheckBox cb : checkBoxesSubtarefas) {
+                    cb.setSelected(isChecked);
+                }
+
+                if (gerenciador != null) FuncoesSerial.salvarGerenciador(gerenciador);
+            
+            } finally {
+                flagAtualizacao = false; 
+            }
+        });
         bottomPanel.add(chkFeito);
 
         painelPrincipal.add(bottomPanel, BorderLayout.SOUTH);
 
-        // Finaliza
+        
         add(painelPrincipal);
 
     }
@@ -205,6 +237,26 @@ public class PostitDetail extends JFrame{
         textArea.setBorder(null);
         textArea.setFont(new Font(fontName, style, size));
         textArea.setEditable(false);
+    }
+
+    private void verificarTodasSubtarefas() {
+        if (checkBoxesSubtarefas.isEmpty()) return;
+
+        boolean todasMarcadas = true;
+        for (JCheckBox cb : checkBoxesSubtarefas) {
+            if (!cb.isSelected()) {
+                todasMarcadas = false;
+                break;
+            }
+        }
+
+        if (chkFeito.isSelected() != todasMarcadas) {
+            flagAtualizacao = true;
+            chkFeito.setSelected(todasMarcadas);
+            tarefaOriginal.setFeito(todasMarcadas);
+            
+            flagAtualizacao = false;
+        }
     }
 
 }

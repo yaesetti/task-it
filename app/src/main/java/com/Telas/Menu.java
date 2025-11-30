@@ -124,17 +124,13 @@ public class Menu {
         List<UUID> userTaskIds = this.user.getTaskIds();
         List<Task> tasks = this.ger.getGerTasks().getTasks();
 
-        // debug (remova depois)
-        System.out.println("atualizarPostIts: userTaskIds=" + (userTaskIds == null ? 0 : userTaskIds.size())
-            + ", totalTasks=" + (tasks == null ? 0 : tasks.size()));
-
         if (tasks != null && !tasks.isEmpty() && userTaskIds != null && !userTaskIds.isEmpty()) {
             for (Task task : tasks) {
                 if (task == null || task.getId() == null) {
                     continue;
                 }
                 if (userTaskIds.contains(task.getId())) {
-                    Postit postit = new Postit(task);
+                    Postit postit = new Postit(task, ger);
                     C2.add(postit.PanelPostit());
                 }
             }
@@ -168,7 +164,7 @@ public class Menu {
 
                 if (task.getData() != null) {
                     if (task.getData().toLocalDate().isEqual(hoje)) {
-                        Postit postit = new Postit(task);
+                        Postit postit = new Postit(task, ger);
                         C2.add(postit.PanelPostit());
                     }
                 }
@@ -204,7 +200,7 @@ public class Menu {
                 if (task.getData() != null) {
                     java.time.LocalDate d = task.getData().toLocalDate();
                     if (d.getYear() == hoje.getYear() && d.getMonthValue() == hoje.getMonthValue()) {
-                        Postit postit = new Postit(task);
+                        Postit postit = new Postit(task, ger);
                         C2.add(postit.PanelPostit());
                     }
                 }
@@ -256,9 +252,6 @@ public class Menu {
             }
         }
 
-        // persiste / atualiza UI
-        // OBS: hoje FuncoesSerial.salvarUsuarios salva apenas usuário/credenciais.
-        // Se quiser persistir tasks entre reinícios, precisar salvar o Gerenciador todo.
         FuncoesSerial.salvarGerenciador(ger);
         atualizarPostIts();
     }

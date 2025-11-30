@@ -8,6 +8,7 @@ import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.time.format.DateTimeFormatter;
+
 import javax.swing.BorderFactory;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
@@ -16,7 +17,15 @@ import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+
 import java.awt.Color;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+
+import com.gerenciadores.Gerenciador;
+import com.serializacao.FuncoesSerial;
 
 public class Postit extends JPanel {
 
@@ -25,15 +34,17 @@ public class Postit extends JPanel {
     private final JTextArea categArea;
     private final JCheckBox feitoArea;
     private final Task tarefaOriginal;
+    private final Gerenciador gerenciador;
 
-    public Postit(Task task) {
+    public Postit(Task task, Gerenciador ger) {
         if (task == null) {
             throw new IllegalArgumentException("IllegalArgumentException: Essa task é null");
         }
 
         this.tarefaOriginal = task;
-        String title = task.getTitulo();
+        this.gerenciador = ger;
 
+        String title = task.getTitulo();
         Categoria categoria = task.getCategoria();
         String categ;
         Color corFundo;
@@ -64,7 +75,7 @@ public class Postit extends JPanel {
         this.setPreferredSize(new Dimension(200, 200));
         this.setLayout(new BorderLayout());
 
-        // Criação de painel para abrigar o título centralizado
+        // Criação de painel para abrigar o título
         JPanel Top = new JPanel();
         Top.setLayout(new GridLayout(0, 1, 4, 2));
         Top.setOpaque(false);
@@ -94,17 +105,21 @@ public class Postit extends JPanel {
         titleArea.addMouseListener(new java.awt.event.MouseAdapter() {
             @Override
             public void mouseClicked(java.awt.event.MouseEvent e) {
-                PostitDetail detail = new PostitDetail(task);
+                PostitDetail detail = new PostitDetail(task, gerenciador);
                 detail.setVisible(true);
+                detail.addWindowListener(new WindowAdapter() {
+                    @Override
+                    public void windowClosed(WindowEvent e) {
+                        atualizarVisualizacao();
+                    }
+                });
             }
         });
 
-        // Painel auxiliar para abrigar a linha sob o título
         JPanel linha = new JPanel();
-        linha.setBackground(new Color(0, 0, 0)); // Um amarelo mais escuro/queimado
+        linha.setBackground(new Color(0, 0, 0)); 
         linha.setPreferredSize(new Dimension(130, 2)); 
         linha.setMaximumSize(new Dimension(130, 2)); 
-        // Wrapper para centralizar a linha horizontalmente
         JPanel linhaWrapper = new JPanel(new FlowLayout(FlowLayout.CENTER, 0, 5));
         linhaWrapper.setOpaque(false);
         linhaWrapper.add(linha);
@@ -127,12 +142,28 @@ public class Postit extends JPanel {
         Down.setOpaque(false);
         Down.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 0));
 
-        // Painel em formato de caixa assinalável para marcar a conclusão
-        feitoArea = new JCheckBox("Feito", feito); // O segundo parâmetro marca ou desmarca
+        // Painel em formato de caixa de conclusão
+        feitoArea = new JCheckBox("Feito", feito);
         feitoArea.setOpaque(false);
         feitoArea.setFont(new Font("Segoe Print", Font.BOLD, 10));
         feitoArea.setEnabled(true);
         feitoArea.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        feitoArea.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                boolean isChecked = (e.getStateChange() == ItemEvent.SELECTED);
+                
+                tarefaOriginal.setFeito(isChecked);
+                tarefaOriginal.setFeitoTodasSubtarefas(isChecked);
+              
+                if (gerenciador != null) {
+                    FuncoesSerial.salvarGerenciador(gerenciador);
+                }
+
+                revalidate();
+                repaint();
+            }
+        });
         Down.add(feitoArea);
         this.add(Down, BorderLayout.SOUTH);
 
@@ -154,6 +185,14 @@ public class Postit extends JPanel {
         Wrapper.add(this);
 
         return Wrapper;
+    }
+
+    private void atualizarVisualizacao() {
+        boolean estaFeito = tarefaOriginal.getFeito();
+        feitoArea.setSelected(estaFeito);
+
+        revalidate();
+        repaint();
     }
     
 }
