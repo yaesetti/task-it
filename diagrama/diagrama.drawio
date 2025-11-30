@@ -1,6 +1,6 @@
 <mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.1.1">
   <diagram name="Página-1" id="hbI3UuZTF_KOHjykm-av">
-    <mxGraphModel dx="4541" dy="3746" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="4354" dy="3618" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -32,10 +32,10 @@
         <mxCell id="5mO6LKibiDkBLd1a1tYg-12" parent="5mO6LKibiDkBLd1a1tYg-9" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ Subtarefa(titulo: String, descricao: String)&lt;div&gt;+ trocarFeito(): void&lt;/div&gt;" vertex="1">
           <mxGeometry height="40" width="260" y="108" as="geometry" />
         </mxCell>
-        <mxCell id="5mO6LKibiDkBLd1a1tYg-22" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;Interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;Task&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ trocarFeito(): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ adicionarSubtarefa(titulo: String, descricao: String): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ adicionarSubtarefa(titulo: String): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ excluirSubtarefa(id: UUID): boolean&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ setFeitoTodasSubtarefas(novoFeito: boolean): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ calcularTempoRestante(): Duration&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ adicionarUsuarioDono(novoUsuarioDono: Usuario): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ removerUsuarioDono(id: UUID): boolean&lt;/p&gt;" vertex="1">
+        <mxCell id="5mO6LKibiDkBLd1a1tYg-22" parent="1" style="verticalAlign=top;align=left;overflow=fill;html=1;whiteSpace=wrap;" value="&lt;p style=&quot;margin:0px;margin-top:4px;text-align:center;&quot;&gt;&lt;i&gt;&amp;lt;&amp;lt;interface&amp;gt;&amp;gt;&lt;/i&gt;&lt;br&gt;&lt;b&gt;Task&lt;/b&gt;&lt;/p&gt;&lt;hr size=&quot;1&quot; style=&quot;border-style:solid;&quot;&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ trocarFeito(): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ adicionarSubtarefa(titulo: String, descricao: String): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ adicionarSubtarefa(titulo: String): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ excluirSubtarefa(id: UUID): boolean&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ setFeitoTodasSubtarefas(novoFeito: boolean): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ calcularTempoRestante(): Duration&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ adicionarUsuarioDono(novoUsuarioDono: Usuario): void&lt;/p&gt;&lt;p style=&quot;margin:0px;margin-left:4px;&quot;&gt;+ removerUsuarioDono(id: UUID): boolean&lt;/p&gt;" vertex="1">
           <mxGeometry height="170" width="340" x="-680" y="-670" as="geometry" />
         </mxCell>
-        <mxCell id="5mO6LKibiDkBLd1a1tYg-24" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&amp;lt;&amp;lt;abstract&amp;gt;&amp;gt;&amp;nbsp;&lt;/div&gt;&lt;div&gt;TaskAbstrata&lt;/div&gt;" vertex="1">
+        <mxCell id="5mO6LKibiDkBLd1a1tYg-24" parent="1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&lt;span style=&quot;font-weight: normal;&quot;&gt;&amp;lt;&amp;lt;&lt;i&gt;abstract&lt;/i&gt;&amp;gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;TaskAbstrata&lt;/span&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="318" width="670" x="-1010" y="-1040" as="geometry">
             <mxRectangle height="60" width="280" x="-710" y="440" as="alternateBounds" />
           </mxGeometry>
@@ -72,7 +72,7 @@
           <mxGeometry height="60" width="940" y="74" as="geometry" />
         </mxCell>
         <mxCell id="5mO6LKibiDkBLd1a1tYg-37" parent="1" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=40;fillColor=none;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" value="&lt;div&gt;&amp;lt;&amp;lt;&lt;i&gt;enum&lt;/i&gt;&amp;gt;&amp;gt;&lt;/div&gt;&lt;div&gt;&lt;b&gt;TipoUsuario&lt;/b&gt;&lt;/div&gt;" vertex="1">
-          <mxGeometry height="80" width="140" x="-1680" y="-790" as="geometry">
+          <mxGeometry height="80" width="140" x="-1580" y="-840" as="geometry">
             <mxRectangle height="70" width="140" x="-1580" y="535" as="alternateBounds" />
           </mxGeometry>
         </mxCell>
@@ -105,7 +105,7 @@
         <mxCell id="5mO6LKibiDkBLd1a1tYg-63" parent="5mO6LKibiDkBLd1a1tYg-60" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="&lt;div&gt;+ UsuarioAdministrador(nome: String, senha: String, imagePath: String)&lt;/div&gt;&lt;div&gt;+ getMaxTasks(): int&lt;/div&gt;&lt;div&gt;+ getTipoUsuario(): TipoUsuario&lt;/div&gt;" vertex="1">
           <mxGeometry height="60" width="410" y="26" as="geometry" />
         </mxCell>
-        <mxCell id="5mO6LKibiDkBLd1a1tYg-75" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-33" style="endArrow=diamondThin;endFill=1;endSize=24;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="5mO6LKibiDkBLd1a1tYg-24" value="">
+        <mxCell id="5mO6LKibiDkBLd1a1tYg-75" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-33" style="endArrow=block;endFill=0;endSize=12;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;" target="5mO6LKibiDkBLd1a1tYg-24" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <Array as="points">
               <mxPoint x="-580" y="-1080" />
@@ -130,13 +130,13 @@
             <mxPoint x="-620" y="300" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="5mO6LKibiDkBLd1a1tYg-82" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-56" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;edgeStyle=elbowEdgeStyle;" target="5mO6LKibiDkBLd1a1tYg-42" value="">
+        <mxCell id="5mO6LKibiDkBLd1a1tYg-82" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-56" style="endArrow=block;endFill=0;endSize=12;html=1;rounded=0;edgeStyle=elbowEdgeStyle;" target="5mO6LKibiDkBLd1a1tYg-42" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <mxPoint x="-1320" y="370" as="sourcePoint" />
             <mxPoint x="-1320" y="270" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="5mO6LKibiDkBLd1a1tYg-83" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-60" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;edgeStyle=elbowEdgeStyle;jumpStyle=arc;" target="5mO6LKibiDkBLd1a1tYg-42" value="">
+        <mxCell id="5mO6LKibiDkBLd1a1tYg-83" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-60" style="endArrow=block;endFill=0;endSize=12;html=1;rounded=0;edgeStyle=elbowEdgeStyle;jumpStyle=arc;" target="5mO6LKibiDkBLd1a1tYg-42" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <Array as="points">
               <mxPoint x="-1460" y="-270" />
@@ -157,7 +157,7 @@
             <mxPoint x="-950" y="372" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="5mO6LKibiDkBLd1a1tYg-91" edge="1" parent="1" source="9Yu84J3IP8-hEdUWHken-11" style="endArrow=open;endFill=1;endSize=12;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;jumpSize=15;" target="5mO6LKibiDkBLd1a1tYg-42" value="">
+        <mxCell id="5mO6LKibiDkBLd1a1tYg-91" edge="1" parent="1" source="9Yu84J3IP8-hEdUWHken-11" style="endArrow=none;endFill=0;endSize=12;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;jumpStyle=arc;jumpSize=15;startArrow=diamondThin;startFill=1;startSize=24;" target="5mO6LKibiDkBLd1a1tYg-42" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <Array as="points">
               <mxPoint x="-1270" y="-546" />
@@ -184,7 +184,7 @@
             <mxPoint x="-630" y="410" as="targetPoint" />
           </mxGeometry>
         </mxCell>
-        <mxCell id="5mO6LKibiDkBLd1a1tYg-90" edge="1" parent="1" source="9Yu84J3IP8-hEdUWHken-15" style="endArrow=block;dashed=1;endFill=0;endSize=12;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;" target="5mO6LKibiDkBLd1a1tYg-45" value="">
+        <mxCell id="5mO6LKibiDkBLd1a1tYg-90" edge="1" parent="1" source="9Yu84J3IP8-hEdUWHken-15" style="endArrow=none;endFill=0;endSize=12;html=1;rounded=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;edgeStyle=orthogonalEdgeStyle;startArrow=diamondThin;startFill=1;startSize=24;" target="5mO6LKibiDkBLd1a1tYg-45" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <Array as="points">
               <mxPoint x="-1370" y="-472" />
@@ -217,7 +217,7 @@
         <mxCell id="9Yu84J3IP8-hEdUWHken-18" parent="9Yu84J3IP8-hEdUWHken-15" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" value="+ GerenciadorDeTasks()&lt;div&gt;+ criarTask(titulo: String, descricao: String, categoria: Categoria, data: LocalDateTime, usuarioCriador: Usuario): Task&lt;/div&gt;&lt;div&gt;&lt;div&gt;+ criarTask(titulo: String, descricao: String, categoria: Categoria, data: LocalDateTime, usuarioCriador: Usuario, recorrencia: Duration, dataFinal: LocalDateTime): Task&lt;/div&gt;&lt;div&gt;+ apagarTask(id: UUID): boolean&lt;/div&gt;&lt;div&gt;+ buscarTask(id: UUID): Task&lt;/div&gt;&lt;div&gt;+ criarCategoria(nome: String, descricao: String, cor: Color): void&lt;/div&gt;&lt;div&gt;+ criarCategoria(nome: String, cor: Color): void&lt;/div&gt;&lt;div&gt;+ apagarCategoria(nome: String): boolean&lt;/div&gt;&lt;div&gt;+ getTasksPorCategoria(nome: String): List&amp;lt;Task&amp;gt;&lt;/div&gt;&lt;div&gt;+ removerUsuarioDeTodasTasks(id: UUID): boolean&lt;/div&gt;&lt;div&gt;+ adicionarUsuarioAdm(novoUsuarioAdm: Usuario): void&lt;/div&gt;&lt;div&gt;+ removerUsuarioAdm(id: UUID): boolean&lt;/div&gt;&lt;/div&gt;" vertex="1">
           <mxGeometry height="190" width="910" y="94" as="geometry" />
         </mxCell>
-        <mxCell id="9Yu84J3IP8-hEdUWHken-20" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-29" style="endArrow=diamondThin;endFill=1;endSize=24;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;entryX=0.5;entryY=0;entryDx=0;entryDy=0;elbow=vertical;" target="5mO6LKibiDkBLd1a1tYg-24" value="">
+        <mxCell id="9Yu84J3IP8-hEdUWHken-20" edge="1" parent="1" source="5mO6LKibiDkBLd1a1tYg-29" style="endArrow=block;endFill=0;endSize=12;html=1;rounded=0;edgeStyle=orthogonalEdgeStyle;entryX=0.5;entryY=0;entryDx=0;entryDy=0;elbow=vertical;" target="5mO6LKibiDkBLd1a1tYg-24" value="">
           <mxGeometry relative="1" width="160" as="geometry">
             <Array as="points">
               <mxPoint x="-1260" y="-1080" />
