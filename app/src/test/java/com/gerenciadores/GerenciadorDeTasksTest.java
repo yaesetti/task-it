@@ -1,4 +1,4 @@
-package gerenciador_test;
+package com.gerenciadores;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -25,7 +25,7 @@ import java.util.UUID;
 import java.util.List;
 import java.util.ArrayList;
 
-public class GerenciadorTaskTeste {
+public class GerenciadorDeTasksTest {
     
     private GerenciadorDeTasks gerenciador;
     private Categoria categoria;

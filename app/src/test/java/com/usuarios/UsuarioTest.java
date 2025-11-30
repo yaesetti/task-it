@@ -1,4 +1,4 @@
-package usuario_test;
+package com.usuarios;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
