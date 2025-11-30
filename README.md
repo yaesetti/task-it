@@ -8,15 +8,25 @@ Agnes Manoel - RA: 232879<br>
 Bernardo Correia Prados Nascimento - RA: 245837
 
 ## Diferenças com a Proposta Original:
-Houveram algumas mudanças com relação a proposta original devido a um prazo de tempo curto, e uma maior dificuldade com o manejo da interface gráfica do que o esperado. Dentre elas estão:
+Houveram algumas mudanças com relação a proposta original devido a um prazo de tempo curto, e uma maior dificuldade com o manejo da interface gráfica do que o esperado.<br>
+Dentre elas estão:
 - O conceito de "metas" foi aglutinado por "subtarefas"
 - Tasks não serã compartilhadas entre diferentes usuários
 
-# TODO:
-- Botão de "feito"
-- Documentação
-- Task periódica
-- Apagar task
+## Interfaces e Classes Abstratas
+- **Interface:** `Task`
+- **Classes Abstratas:** `TaskAbstrata` e `Usuario`
+
+## Interface gráfica:
+- `JavaX Swing`
+
+## Exceções Implementadas:
+- `DataInvalidaException`
+- `NomeDuplicadoException`
+- `UsuarioInvalidoException`
+
+## Gravação e Leitura de Arquivos:
+- `JavaIO Serializable`
 
 # Diagrama UML:
 Este diagrama UML está bem diferente do enviado na Atividade 3, mas representa de maneira muito mais organizada e fiel o estado atual do projeto.<br>
