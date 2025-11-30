@@ -27,47 +27,79 @@ import java.util.ArrayList;
 
 public class GerenciadorTest {
     
-    private GerenciadorDeTasks gerTasks;
-    private Categoria categoria;
-    private UsuarioPadrao usuarioCriador;
+    private Gerenciador gerenciador;
 
     @BeforeEach
     void setUp() {
-        gerTasks = new GerenciadorDeTasks();
-        usuarioCriador = new UsuarioPadrao("Criador", "123", null);
-        categoria = new Categoria("Geral", "Teste", Color.BLACK);
+        gerenciador = new Gerenciador();
     }
 
-    @Test
-    void testCategorias() throws NomeDuplicadoException {
-        gerTasks.criarCategoria("Trabalho", Color.RED);
-        
-        assertEquals(1, gerTasks.getCategorias().size());
-        assertEquals("Trabalho", gerTasks.getCategorias().get(0).getNome());
 
-        // Teste de duplicata
+    // Teste relacionado à criação de um usuário //
+
+    @Test
+    void testCriarUsuario() throws NomeDuplicadoException {
+        gerenciador.criarUsuario(TipoUsuario.PADRAO, "Lex Luthor", "123456", null);
+
+        List<Usuario> usuarios = gerenciador.getUsuarios();
+        assertEquals(1, usuarios.size());
+        assertEquals("Lex Luthor", usuarios.get(0).getNome());
+        
+        UUID id = usuarios.get(0).getId();
+
+        assertTrue(gerenciador.validarSenha(id, "123456"));
+        assertFalse(gerenciador.validarSenha(id, "000000"));
+    }
+
+
+    // Teste relacionado ao conflito gerado quando se cria um usuário de mesmo nome que outro //
+
+    @Test
+    void testNomeDuplicado() throws NomeDuplicadoException {
+        gerenciador.criarUsuario(TipoUsuario.PADRAO, "Adam Strange", "123456", null);
+
         assertThrows(NomeDuplicadoException.class, () -> {
-            gerTasks.criarCategoria("Trabalho", "Outra desc", Color.BLUE);
+            gerenciador.criarUsuario(TipoUsuario.ADMINISTRADOR, "Adam Strange", "000000", null);
         });
-
-        boolean removeu = gerTasks.apagarCategoria("Trabalho");            
-        
-        assertTrue(removeu);
-        assertTrue(gerTasks.getCategorias().isEmpty());
     }
 
-    @Test
-    void testCriarTaskPadrao() {
-        LocalDateTime dataFutura = LocalDateTime.now().plusDays(1);
-        
-        Task task = gerTasks.criarTask("Titulo", "Desc", categoria, dataFutura, usuarioCriador);
 
-        assertNotNull(task);
-        assertEquals(1, gerTasks.getTasks().size());
-        // Verifica se o usuário criador foi adicionado como dono
-        assertTrue(task.getUsuariosDonos().contains(usuarioCriador));
-        // Verifica se a task foi adicionada à lista de tasks do usuário
-        // assertTrue(usuarioCriador.getTaskIds().contains(task.getId()));
+    // Teste relacionado à mudança de senha //
+
+    @Test
+    void testAlterarSenha() throws NomeDuplicadoException {
+        gerenciador.criarUsuario(TipoUsuario.PADRAO, "Adam Strange", "antiga", null);
+        UUID id = gerenciador.getUsuarios().get(0).getId();
+
+        boolean alterouErrado = gerenciador.alterarSenha(id, "errada", "nova");
+        assertFalse(alterouErrado);
+
+        boolean alterouCerto = gerenciador.alterarSenha(id, "antiga", "nova");
+        assertTrue(alterouCerto);
+
+        assertTrue(gerenciador.validarSenha(id, "nova"));
+    }
+
+
+    // Teste de exclusão de um usuário do sistema //
+
+    @Test
+    void testApagarUsuario() throws NomeDuplicadoException {
+        
+        gerenciador.criarUsuario(TipoUsuario.PADRAO, "Adam Strange", "123", null);
+        Usuario usuario = gerenciador.getUsuarios().get(0);
+        UUID id = usuario.getId();
+
+        gerenciador.getGerTasks().criarCategoria("Título categ", Color.BLUE);
+        Categoria categ = gerenciador.getGerTasks().getCategorias().get(0);
+        Task task = gerenciador.getGerTasks().criarTask("Título task", "Título desc", categ, LocalDateTime.now().plusDays(5), usuario);
+    
+        boolean apagou = gerenciador.apagarUsuario(id, "123");
+        assertTrue(apagou);
+
+        assertTrue(gerenciador.getUsuarios().isEmpty()); 
+        assertFalse(gerenciador.validarSenha(id, "123")); 
+        assertFalse(task.getUsuariosDonos().contains(usuario));
     }
 
 }
