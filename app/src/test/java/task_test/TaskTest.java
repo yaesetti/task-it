@@ -55,7 +55,7 @@ public class TaskTest {
        
         assertFalse(restante.isNegative());
         assertFalse(restante.isZero());
-        assertTrue(restante.compareTo(Duration.ofDays(5)) < 0);
+        assertTrue(restante.toDays() <= 5);
     }
 
     @Test
