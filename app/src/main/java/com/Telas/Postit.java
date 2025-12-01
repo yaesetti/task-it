@@ -17,15 +17,21 @@ import javax.swing.JTextPane;
 import javax.swing.text.SimpleAttributeSet;
 import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
+
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import java.awt.Color;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.UUID;
+
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
 
 import com.gerenciadores.Gerenciador;
 import com.serializacao.FuncoesSerial;
+import com.usuarios.Usuario;
 
 public class Postit extends JPanel {
 
@@ -150,12 +156,14 @@ public class Postit extends JPanel {
         this.add(Top, BorderLayout.NORTH);
 
         // Criação de painel na base da janela 
-        JPanel Down = new JPanel();
-        Down.setLayout(new FlowLayout(FlowLayout.RIGHT));
+        JPanel Down = new JPanel(new BorderLayout());
         Down.setOpaque(false);
         Down.setBorder(BorderFactory.createEmptyBorder(0, 10, 5, 0));
 
         // Painel em formato de caixa de conclusão
+        JPanel rightPanel = new JPanel(new FlowLayout(FlowLayout.RIGHT, 0, 0));
+        rightPanel.setOpaque(false);
+
         feitoArea = new JCheckBox("Feito", feito);
         feitoArea.setOpaque(false);
         feitoArea.setFont(new Font("Segoe Print", Font.BOLD, 10));
@@ -177,7 +185,50 @@ public class Postit extends JPanel {
                 repaint();
             }
         });
-        Down.add(feitoArea);
+
+        rightPanel.add(feitoArea);
+
+        // Botão para apagar a Task
+        JPanel leftPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 0, 0));
+        leftPanel.setOpaque(false);
+
+        JButton apagarBtn = new JButton("Apagar");
+        apagarBtn.setOpaque(false);
+        apagarBtn.setFont(new Font("Segoe Print", Font.BOLD, 10));
+        apagarBtn.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        apagarBtn.addActionListener(ev -> {
+            int escolha = JOptionPane.showConfirmDialog(Postit.this, 
+                "Tem certeza que deseja apagar essa Task?", 
+                "Confirmar exclusao", 
+                JOptionPane.YES_NO_OPTION, 
+                JOptionPane.WARNING_MESSAGE);
+                if (escolha != JOptionPane.YES_OPTION) return;
+
+                UUID id = tarefaOriginal.getId();
+
+                if (gerenciador != null) {
+                    boolean removed = gerenciador.getGerTasks().apagarTask(id);
+
+                    for (Usuario usuario : tarefaOriginal.getUsuariosDonos()) {
+                        usuario.removerTask(id);
+                    }
+
+                    FuncoesSerial.salvarGerenciador(ger);
+                }
+
+                java.awt.Container parent = Postit.this.getParent();
+                if (parent != null) {
+                    parent.remove(Postit.this);
+                    parent.revalidate();
+                    parent.repaint();
+                }
+        });
+        leftPanel.add(apagarBtn);
+
+        // Juntando os dois botões no painel Down
+        Down.add(leftPanel, BorderLayout.WEST);
+        Down.add(rightPanel, BorderLayout.EAST);
+
         this.add(Down, BorderLayout.SOUTH);
 
     }
