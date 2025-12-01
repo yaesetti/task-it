@@ -22,7 +22,7 @@ foo@bar:~/task-it$ ./gradlew run
 Houveram algumas mudanças com relação a proposta original devido a um prazo de tempo curto, e uma maior dificuldade com o manejo da interface gráfica do que o esperado.<br>
 Dentre elas estão:
 - O conceito de "metas" foi aglutinado por "subtarefas"
-- Tasks não serã compartilhadas entre diferentes usuários
+- Tasks não serão compartilhadas entre diferentes usuários
 
 ## Interfaces e Classes Abstratas
 - **Interface:** `Task`
