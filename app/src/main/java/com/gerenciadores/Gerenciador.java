@@ -80,6 +80,7 @@ public class Gerenciador implements Serializable {
         Usuario usuario;
         if (tipo == TipoUsuario.ADMINISTRADOR) {
             usuario = new UsuarioAdministrador(nome, senha, imagePath);
+            gerTasks.adicionarUsuarioAdm(usuario);
         }
         else {
             usuario = new UsuarioPadrao(nome, senha, imagePath);

@@ -20,6 +20,7 @@ public class TelaSimplesGerenciador extends JDialog {
 
     private JTextField nomeField;
     private JPasswordField senhaField;
+    private JCheckBox adminCheck;
 
     public TelaSimplesGerenciador(Frame parent, Gerenciador ger) {
         super(parent, true);
@@ -46,6 +47,10 @@ public class TelaSimplesGerenciador extends JDialog {
 
         btnLogin.addActionListener(e -> fazerLogin());
         btnCadastro.addActionListener(e -> fazerCadastro());
+
+        adminCheck = new JCheckBox("Cadastrar Adm");
+        add(new JLabel(""));
+        add(adminCheck);
     }
     private void fazerLogin() throws NullPointerException {
         String nome = nomeField.getText().trim();
@@ -77,8 +82,13 @@ public class TelaSimplesGerenciador extends JDialog {
             return;
         }
 
+        TipoUsuario tipo = TipoUsuario.PADRAO;
+        if (adminCheck != null && adminCheck.isSelected()) {
+            tipo = TipoUsuario.ADMINISTRADOR;
+        }
+
         try {
-            ger.criarUsuario(TipoUsuario.PADRAO, nome, senha, null);
+            ger.criarUsuario(tipo, nome, senha, null);
             JOptionPane.showMessageDialog(this, "Usuário criado com sucesso!");
         } catch (NomeDuplicadoException e) {
             JOptionPane.showMessageDialog(this, e.getMessage());

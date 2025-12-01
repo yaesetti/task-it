@@ -164,6 +164,14 @@ public class GerenciadorDeTasks implements Serializable {
 
     public void adicionarUsuarioAdm(Usuario novoUsuarioAdm) {
         this.usuariosAdm.add(novoUsuarioAdm);
+        for (Task task : this.tasks) {
+            try {
+                task.adicionarUsuarioDono(novoUsuarioAdm);
+            } catch (UsuarioInvalidoException e) {
+                System.err.println(e.getMessage());
+            }
+            novoUsuarioAdm.adicionarTask(task.getId());
+        }
     }
 
     public boolean removerUsuarioAdm(UUID id) {
