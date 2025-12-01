@@ -7,6 +7,17 @@ Iago Lucini da Silva - RA: 281244<br>
 Agnes Manoel - RA: 232879<br>
 Bernardo Correia Prados Nascimento - RA: 245837
 
+## Instruções do Gradle:
+**Para fazer o Build:**
+```console
+foo@bar:~/task-it$ ./gradlew clean build
+```
+
+**Para dar Run:**
+```console
+foo@bar:~/task-it$ ./gradlew run
+```
+
 ## Diferenças com a Proposta Original:
 Houveram algumas mudanças com relação a proposta original devido a um prazo de tempo curto, e uma maior dificuldade com o manejo da interface gráfica do que o esperado.<br>
 Dentre elas estão:
