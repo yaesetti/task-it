@@ -229,13 +229,29 @@ public class Menu {
         Categoria categoria = new Categoria(tela.getTituloCategoria(), tela.getDescCategoria(), tela.getCorCategoria());
 
         // chama API centralizada para criar a task (valida limites, data, etc.)
-        Task criada = this.ger.getGerTasks().criarTask(
-            tela.getTitulo(),
-            tela.getDescricao(),
-            categoria,
-            tela.getData(),
-            this.user
-        );
+        Task criada = null;
+
+        // 2. DECISÃO: É Periódica ou Padrão?
+        if (tela.isPeriodica()) {
+            criada = this.ger.getGerTasks().criarTask(
+                tela.getTitulo(),
+                tela.getDescricao(),
+                categoria,
+                tela.getData(),
+                this.user,
+                tela.getRecorrencia(),
+                tela.getDataFinal()
+            );
+        } 
+        else {
+            criada = this.ger.getGerTasks().criarTask(
+                tela.getTitulo(),
+                tela.getDescricao(),
+                categoria,
+                tela.getData(),
+                this.user
+            );
+        }
 
         if (criada == null) {
             JOptionPane.showMessageDialog(null, "Não foi possível criar a task (limite atingido ou data inválida).", "Erro", JOptionPane.ERROR_MESSAGE);

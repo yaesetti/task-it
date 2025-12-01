@@ -121,6 +121,22 @@ public class PostitDetail extends JFrame{
         }
         configurarAreaTexto(categArea, "Segoe Print", Font.BOLD, 14);
         topPanel.add(categArea);
+        if (tarefaOriginal instanceof TaskPeriodica) {
+            TaskPeriodica tp = (TaskPeriodica) tarefaOriginal;
+            long dias = tp.getRecorrencia().toDays();
+            
+            String textoRecorrencia = " --- Repetir a cada " + dias + " dias";
+            
+            if (tp.getDataFinal() != null) {
+                String dataFim = tp.getDataFinal().format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+                textoRecorrencia += " até " + dataFim;
+            }
+            textoRecorrencia += " ---";
+            JTextArea recArea = new JTextArea(textoRecorrencia);
+            configurarAreaTexto(recArea, "Segoe Print", Font.BOLD, 12);
+                        
+            topPanel.add(recArea);
+        }
         topPanel.add(javax.swing.Box.createVerticalStrut(20));
         painelPrincipal.add(topPanel, BorderLayout.NORTH);
 

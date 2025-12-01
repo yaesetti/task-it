@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.awt.event.ItemEvent; 
+import java.time.Duration;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -21,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.JComboBox;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.JCheckBox;
 
 /**
  * Janela/dialog para coletar os dados de uma nova Task.
@@ -34,6 +37,10 @@ public class InserirTarefa extends JFrame {
     private LocalDateTime data;
     private Color corCategoria;
     private final List<String> subtarefas = new ArrayList<>();
+    private boolean isPeriodica = false;
+    private Duration recorrencia;
+    private LocalDateTime dataFinal;
+    
     private boolean deuCerto = false;
 
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -59,6 +66,30 @@ public class InserirTarefa extends JFrame {
         subTarefasArea.setWrapStyleWord(true);
         JScrollPane scrollSubTarefas = new JScrollPane(subTarefasArea);
 
+        JCheckBox checkPeriodica = new JCheckBox("É uma tarefa periódica?");
+        JTextField diasRecorrenciaField = new JTextField("7", 5);
+        JTextField dataFinalField = new JTextField("2027-12-25 08:30", 15);
+        dataFinalField.setToolTipText("Deixe vazio para sem data final");
+
+        // Labels para os campos novos
+        JLabel lblRecorrencia = new JLabel("Repetir a cada (dias):");
+        JLabel lblDataFinal = new JLabel("Data Final (Opcional):");
+
+        // Começam desabilitados
+        diasRecorrenciaField.setEnabled(false);
+        dataFinalField.setEnabled(false);
+        lblRecorrencia.setEnabled(false);
+        lblDataFinal.setEnabled(false);
+
+        // Lógica visual: Habilitar campos se checkbox marcado
+        checkPeriodica.addItemListener(e -> {
+            boolean selecionado = (e.getStateChange() == ItemEvent.SELECTED);
+            diasRecorrenciaField.setEnabled(selecionado);
+            dataFinalField.setEnabled(selecionado);
+            lblRecorrencia.setEnabled(selecionado);
+            lblDataFinal.setEnabled(selecionado);
+        });
+
         JPanel mainContainer = new JPanel(new BorderLayout());
 
         // Painel A: campos de linha única
@@ -75,6 +106,15 @@ public class InserirTarefa extends JFrame {
         fieldsPanel.add(corCategoriaBox);
         fieldsPanel.add(new JLabel("Data (AAAA-MM-DD HH:mm):"));
         fieldsPanel.add(dataHoraField);
+        // Adiciona separador ou espaço visual
+        fieldsPanel.add(new JLabel("--- Periodicidade ---"));
+        fieldsPanel.add(checkPeriodica);
+
+        fieldsPanel.add(lblRecorrencia);
+        fieldsPanel.add(diasRecorrenciaField);
+
+        fieldsPanel.add(lblDataFinal);
+        fieldsPanel.add(dataFinalField);
 
         // Painel B: subtarefas
         JPanel subPanel = new JPanel(new BorderLayout());
@@ -105,6 +145,30 @@ public class InserirTarefa extends JFrame {
 
             try {
                 this.data = LocalDateTime.parse(dataHoraStr, FORMATTER);
+
+                this.isPeriodica = checkPeriodica.isSelected();
+                if (this.isPeriodica) {
+                    // Tenta ler dias
+                    String diasStr = diasRecorrenciaField.getText();
+                    if (diasStr == null || diasStr.trim().isEmpty()) {
+                        throw new Exception("Para tasks periódicas, informe os dias de recorrência.");
+                    }
+                    long dias = Long.parseLong(diasStr.trim());
+                    if (dias <= 0) throw new Exception("A recorrência deve ser maior que 0 dias.");
+                    
+                    this.recorrencia = Duration.ofDays(dias);
+
+                    // Tenta ler Data Final (se tiver texto)
+                    String fimStr = dataFinalField.getText();
+                    if (fimStr != null && !fimStr.trim().isEmpty()) {
+                        this.dataFinal = LocalDateTime.parse(fimStr, FORMATTER);
+                        if (this.dataFinal.isBefore(this.data)) {
+                            throw new Exception("A data final não pode ser antes da data de início.");
+                        }
+                    } else {
+                        this.dataFinal = null; // Sem data final
+                    }
+                }
 
                 // subtarefas
                 String textoSubtarefas = subTarefasArea.getText();
@@ -183,5 +247,17 @@ public class InserirTarefa extends JFrame {
 
     public List<String> getSubtarefas() {
         return new ArrayList<>(subtarefas);
+    }
+
+    public boolean isPeriodica() { 
+        return isPeriodica; 
+    }
+    
+    public Duration getRecorrencia() { 
+        return recorrencia; 
+    }
+    
+    public LocalDateTime getDataFinal() { 
+        return dataFinal; 
     }
 }

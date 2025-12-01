@@ -134,6 +134,19 @@ public class Postit extends JPanel {
         categArea = new JTextArea("  Categoria: "+categ);
         this.configurarAreaTexto(categArea, "Segoe Print", Font.BOLD, 13);
         Top.add(categArea);
+        if (tarefaOriginal instanceof TaskPeriodica) {
+            TaskPeriodica tp = (TaskPeriodica) tarefaOriginal;
+            long dias = tp.getRecorrencia().toDays();
+            
+            // Texto indicativo
+            JTextArea recArea = new JTextArea("   --- Repetir a cada: " + dias + " dias ---");
+            // Usando a mesma formatação visual dos outros campos
+            configurarAreaTexto(recArea, "Segoe Print", Font.BOLD, 11); // Fonte levemente menor para caber
+             
+            
+            Top.add(recArea);
+        }
+
         this.add(Top, BorderLayout.NORTH);
 
         // Criação de painel na base da janela 
